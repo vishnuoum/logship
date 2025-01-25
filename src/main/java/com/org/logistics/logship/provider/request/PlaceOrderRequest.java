@@ -12,7 +12,7 @@ public class PlaceOrderRequest {
     private String orderNote;
     private String handlerId;
     private String userId;
-    private boolean isFragile;
+    private boolean fragile;
     private String admissionWarehouseId;
     private String destinationWarehouseId;
     private List<String> qualityCheckIds;

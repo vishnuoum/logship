@@ -15,6 +15,6 @@ public class LogShipResponse {
     }
 
     public static <T extends LogShipErrorResponse> ResponseEntity<LogShipErrorResponse> error(T data) {
-        return new ResponseEntity<>((LogShipErrorResponse) data, ((LogShipErrorResponse) data).getHttpStatusCode());
+        return new ResponseEntity<>(data,  data.getHttpStatusCode());
     }
 }

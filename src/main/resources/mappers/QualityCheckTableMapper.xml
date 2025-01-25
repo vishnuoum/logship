@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.org.logistics.logship.mappers.mybatis.QualityCheckTableMapper">
+
+
+    <!-- Create new Quality Check -->
+    <insert id="insertQualityCheck" useGeneratedKeys="true" keyProperty="qualityCheckId" keyColumn="quality_check_id" parameterType="OrderDetails">
+        INSERT INTO quality_check_list (quality_check_name, description) VALUES (#{qualityCheckName}, #{description});
+    </insert>
+
+</mapper>

@@ -31,4 +31,17 @@ public class CommonUtil {
             return null;
         }
     }
+
+    public static int extractNumberFromId(String id, String prefix) {
+        try {
+            return Integer.parseInt(id.replace(prefix, ""));
+        } catch (Exception e) {
+            LoggerUtil.printInfo(CommonUtil.class, "Error while extracting number from ID");
+        }
+        return 0;
+    }
+
+    public static String appendPrefixToId(int id, String prefix) {
+        return prefix + id;
+    }
 }

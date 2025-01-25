@@ -5,7 +5,7 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class PlaceOrderResponse {
+public class RegisterSenderResponse {
 
-    private String orderInfo;
+    private String senderId;
 }
