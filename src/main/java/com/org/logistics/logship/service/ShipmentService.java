@@ -1,6 +1,7 @@
 package com.org.logistics.logship.service;
 
 import com.org.logistics.logship.constants.Constants;
+import com.org.logistics.logship.dto.ShipmentDetails;
 import com.org.logistics.logship.dto.ShipmentMaster;
 import com.org.logistics.logship.mappers.mapstruct.ShipmentStructMapper;
 import com.org.logistics.logship.persistence.helper.OrderHelper;
@@ -13,6 +14,11 @@ import com.org.logistics.logship.provider.response.LogShipResponse;
 import com.org.logistics.logship.util.CommonUtil;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
 
 @Service
 public class ShipmentService {
@@ -46,6 +52,15 @@ public class ShipmentService {
                 CommonUtil.extractNumberFromId(addShipmentOrdersRequest.getShipmentId(), Constants.SHIPMENT_PREFIX),
                 addShipmentOrdersRequest.getShipmentOrders().stream().map(orderId -> CommonUtil.extractNumberFromId(orderId, Constants.ORDER_PREFIX)).toList());
         return shipmentStructMapper.addShipOrderRequestToAddShipOrderResponse(addShipmentOrdersRequest);
+    }
+
+    @Transactional
+    public void startShipment(String shipmentId) {
+        Integer shipId = CommonUtil.extractNumberFromId(shipmentId, Constants.SHIPMENT_PREFIX);
+        shipmentHelper.startShipment(shipId);
+        ShipmentMaster shipmentMaster = shipmentHelper.getShipmentMaster(shipId);
+        List<ShipmentDetails> shipmentDetails = Optional.ofNullable(shipmentHelper.getShipmentOrders(shipId)).orElse(new ArrayList<>());
+        orderHelper.insertOrderStatus(Constants.OrderStatus.IT.name(), Optional.ofNullable(shipmentMaster).map(ShipmentMaster::getShipmentHandlerId).orElse(0), shipmentDetails.stream().map(ShipmentDetails::getOrderId).toList());
     }
 
     public void endShipment(String shipmentId) {

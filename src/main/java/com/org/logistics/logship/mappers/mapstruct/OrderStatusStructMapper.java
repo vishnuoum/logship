@@ -18,7 +18,7 @@ public interface OrderStatusStructMapper {
     OrderStatus assembleStatus(PlaceOrderRequest placeOrderRequest, OrderDetails orderDetails, String status);
 
     @Mapping(target = "status", source = "status")
-    @Mapping(target = "orderId", source = "updateOrderStatusRequest.orderId")
-    @Mapping(target = "handlerId", source = "updateOrderStatusRequest.handlerId")
+    @Mapping(target = "orderId", expression = "java(com.org.logistics.logship.util.CommonUtil.extractNumberFromId(updateOrderStatusRequest.getOrderId(), com.org.logistics.logship.constants.Constants.ORDER_PREFIX))")
+    @Mapping(target = "handlerId", expression = "java(com.org.logistics.logship.util.CommonUtil.extractNumberFromId(updateOrderStatusRequest.getHandlerId(), com.org.logistics.logship.constants.Constants.HANDLER_PREFIX))")
     OrderStatus assembleStatus(UpdateOrderStatusRequest updateOrderStatusRequest, String status);
 }

@@ -4,6 +4,13 @@
 
 <mapper namespace="com.org.logistics.logship.mappers.mybatis.ShipmentDetailsTableMapper">
 
+    <resultMap id="shipmentDetails" type="ShipmentDetails">
+        <id property="shipmentId" column="shipment_id"/>
+        <id property="orderId" column="order_id"/>
+        <result property="addedDate" column="added_date "/>
+        <result property="endDate" column="end_date"/>
+    </resultMap>
+
 
     <!-- Create new Quality Check -->
     <insert id="addOrdersToShipment">
@@ -14,4 +21,7 @@
         </foreach>
     </insert>
 
+    <select id="getShipmentOrders" parameterType="java.lang.Integer" resultMap="shipmentDetails">
+        Select * from shipment_details where shipment_id = #{shipmentUd}
+    </select>
 </mapper>

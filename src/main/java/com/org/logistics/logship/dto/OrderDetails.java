@@ -4,6 +4,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.sql.Date;
+import java.time.LocalDateTime;
 
 
 @Getter
@@ -17,7 +18,7 @@ public class OrderDetails {
     private boolean fragile;
     private Integer admissionWarehouseId;
     private Integer destinationWarehouseId;
-    private Date createdDate;
-    private Date lastUpdatedDate;
+    private LocalDateTime createdDate;
+    private LocalDateTime lastUpdatedDate;
     private String data;
 }

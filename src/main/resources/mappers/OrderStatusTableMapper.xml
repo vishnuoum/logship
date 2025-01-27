@@ -9,4 +9,12 @@
         Values (#{orderId}, #{handlerId}, #{status});
     </insert>
 
+    <insert id="insertOrderStatusBatch">
+        Insert into order_status (order_id, handler_id, status)
+        Values
+        <foreach collection="orderIds" item="orderId" separator=",">
+            (#{orderId}, #{handlerId}, #{orderStatus})
+        </foreach>
+    </insert>
+
 </mapper>

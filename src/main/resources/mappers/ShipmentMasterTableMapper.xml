@@ -4,14 +4,32 @@
 
 <mapper namespace="com.org.logistics.logship.mappers.mybatis.ShipmentMasterTableMapper">
 
+    <resultMap id="shipmentMaster" type="ShipmentMaster">
+        <id property="shipmentId" column="shipment_id"/>
+        <id property="fromWarehouseId" column="from_warehouse_id"/>
+        <result property="toWarehouseId" column="to_warehouse_id "/>
+        <result property="shipmentHandlerId" column="shipment_handler_id"/>
+        <result property="createdDate" column="created_date"/>
+        <result property="startDate" column="start_date"/>
+        <result property="endDate" column="end_date"/>
+    </resultMap>
+
 
     <!-- Create new Quality Check -->
     <insert id="insertShipment" useGeneratedKeys="true" keyProperty="shipmentId" keyColumn="shipment_id" parameterType="ShipmentMaster">
         INSERT INTO shipment_master (from_warehouse_id, to_warehouse_id, shipment_handler_id) VALUES ((select warehouse_id from handler_details where handler_id = #{fromWarehouseId}), #{toWarehouseId}, #{shipmentHandlerId});
     </insert>
 
-    <update id="endShipment" parameterType="java.lang.String">
+    <update id="startShipment" parameterType="java.lang.Integer">
+        Update shipment_master set start_date = now() where shipment_id = #{shipmentId};
+    </update>
+
+    <update id="endShipment" parameterType="java.lang.Integer">
         Update shipment_master set end_date = now() where shipment_id = #{shipmentId};
     </update>
+
+    <select id="getShipmentMaster" parameterType="java.lang.Integer" resultMap="shipmentMaster">
+        Select * from shipment_master where shipment_id = #{shipmentId};
+    </select>
 
 </mapper>

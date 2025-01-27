@@ -52,6 +52,15 @@ public class OrderHelper {
         }
     }
 
+    public void insertOrderStatus(String orderStatus, Integer handlerId, List<Integer> orderIds) {
+        try {
+            orderStatusTableMapper.insertOrderStatusBatch(orderStatus, handlerId, orderIds);
+        } catch (Exception e) {
+            LoggerUtil.printError(e.getMessage());
+            throw new LogShipErrorResponse("DB_ERROR", "Error while storing order status details in DB", HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
     public OrderDetails getOrderDetails(Integer orderId) {
         try {
             return orderDetailsTableMapper.getOrderDetails(orderId);

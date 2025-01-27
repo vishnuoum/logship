@@ -8,13 +8,9 @@ import java.time.LocalDateTime;
 
 @Getter
 @Setter
-public class ShipmentMaster {
-
+public class ShipmentDetails {
     private Integer shipmentId;
-    private Integer fromWarehouseId;
-    private Integer toWarehouseId;
-    private Integer shipmentHandlerId;
-    private LocalDateTime createdDate;
-    private LocalDateTime startDate;
+    private Integer orderId;
+    private LocalDateTime addedDate;
     private LocalDateTime endDate;
 }

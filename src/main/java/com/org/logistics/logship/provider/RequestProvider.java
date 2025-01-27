@@ -66,6 +66,12 @@ public class RequestProvider {
         return shipmentService.addShipmentOrders(addShipmentOrdersRequest);
     }
 
+    @PutMapping("/startShipment/{shipmentId}")
+    public ResponseEntity<HttpStatus> startShipment(@PathVariable("shipmentId") String shipmentId) {
+        shipmentService.startShipment(shipmentId);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
     @PutMapping("/endShipment/{shipmentId}")
     public ResponseEntity<HttpStatus> endShipment(@PathVariable("shipmentId") String shipmentId) {
         shipmentService.endShipment(shipmentId);

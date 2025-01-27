@@ -56,7 +56,7 @@ public class OrderService {
 
     public void updateOrderStatus(UpdateOrderStatusRequest updateOrderStatusRequest) {
         OrderDetails orderDetails = orderHelper.getOrderDetails(CommonUtil.extractNumberFromId(updateOrderStatusRequest.getOrderId(), Constants.ORDER_PREFIX));
-        HandlerDetails handlerDetails = handlerHelper.getHandlerDetails(CommonUtil.extractNumberFromId(updateOrderStatusRequest.getOrderId(), Constants.HANDLER_PREFIX));
+        HandlerDetails handlerDetails = handlerHelper.getHandlerDetails(CommonUtil.extractNumberFromId(updateOrderStatusRequest.getHandlerId(), Constants.HANDLER_PREFIX));
         boolean isDestinationWarehouse = Optional.ofNullable(orderDetails).map(OrderDetails::getDestinationWarehouseId).orElse(0).equals(
                 Optional.ofNullable(handlerDetails).map(HandlerDetails::getWarehouseId).orElse(-1)
         );
