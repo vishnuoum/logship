@@ -1,6 +1,6 @@
 package com.org.logistics.logship.service;
 
-import com.org.logistics.logship.dao.QualityCheckObject;
+import com.org.logistics.logship.dto.QualityCheckObject;
 import com.org.logistics.logship.mappers.mapstruct.QualityCheckStructMapper;
 import com.org.logistics.logship.persistence.helper.QualityCheckHelper;
 import com.org.logistics.logship.provider.request.AddQualityCheckRequest;

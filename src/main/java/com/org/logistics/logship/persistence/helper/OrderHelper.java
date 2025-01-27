@@ -1,7 +1,7 @@
 package com.org.logistics.logship.persistence.helper;
 
-import com.org.logistics.logship.dao.OrderDetails;
-import com.org.logistics.logship.dao.OrderStatus;
+import com.org.logistics.logship.dto.OrderDetails;
+import com.org.logistics.logship.dto.OrderStatus;
 import com.org.logistics.logship.exception.LogShipErrorResponse;
 import com.org.logistics.logship.logging.LoggerUtil;
 import com.org.logistics.logship.mappers.mybatis.OrderDetailsTableMapper;
@@ -49,6 +49,15 @@ public class OrderHelper {
         } catch (Exception e) {
             LoggerUtil.printError(e.getMessage());
             throw new LogShipErrorResponse("DB_ERROR", "Error while storing order status details in DB", HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    public OrderDetails getOrderDetails(Integer orderId) {
+        try {
+            return orderDetailsTableMapper.getOrderDetails(orderId);
+        } catch (Exception e) {
+            LoggerUtil.printError(e.getMessage());
+            throw new LogShipErrorResponse("DB_ERROR", "Error while fetching order details in DB", HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 }

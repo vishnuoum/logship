@@ -1,6 +1,6 @@
 package com.org.logistics.logship.persistence.helper;
 
-import com.org.logistics.logship.dao.QualityCheckObject;
+import com.org.logistics.logship.dto.QualityCheckObject;
 import com.org.logistics.logship.exception.LogShipErrorResponse;
 import com.org.logistics.logship.logging.LoggerUtil;
 import com.org.logistics.logship.mappers.mybatis.OrderQualityCheckTableMapper;

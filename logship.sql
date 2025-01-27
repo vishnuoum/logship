@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jan 25, 2025 at 11:57 AM
+-- Generation Time: Jan 27, 2025 at 10:32 AM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -59,8 +59,8 @@ CREATE TABLE `order_details` (
   `order_note` text DEFAULT NULL COMMENT 'Additional note on order',
   `sender_id` int(255) NOT NULL COMMENT 'User id who placed the order',
   `fragile` tinyint(1) NOT NULL DEFAULT 0 COMMENT 'Flag stating whether order is fragile',
-  `admission_warehouse` int(255) NOT NULL COMMENT 'Warehouse where order is admitted',
-  `destination_warehouse` int(255) NOT NULL COMMENT 'Warehouse to which order is to be delivered',
+  `admission_warehouse_id` int(255) NOT NULL COMMENT 'Warehouse where order is admitted',
+  `destination_warehouse_id` int(255) NOT NULL COMMENT 'Warehouse to which order is to be delivered',
   `created_date` datetime NOT NULL DEFAULT current_timestamp() COMMENT 'Order Created date',
   `last_updated_date` datetime NOT NULL DEFAULT current_timestamp() COMMENT 'Last order updated date',
   `data` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL COMMENT 'Any additional json data' CHECK (json_valid(`data`))
@@ -124,12 +124,26 @@ CREATE TABLE `sender_details` (
 --
 
 CREATE TABLE `shipment_details` (
+  `shipment_id` int(255) NOT NULL COMMENT 'Shipment id foreign key',
+  `order_id` int(255) NOT NULL COMMENT 'Order Id foreign key',
+  `added_date` datetime NOT NULL DEFAULT current_timestamp() COMMENT 'Shipment added date',
+  `end_date` datetime DEFAULT NULL COMMENT 'Shipment arrival date'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `shipment_master`
+--
+
+CREATE TABLE `shipment_master` (
   `shipment_id` int(255) NOT NULL COMMENT 'Shipment details',
   `from_warehouse_id` int(255) NOT NULL COMMENT 'From warehouse id',
   `to_warehouse_id` int(255) NOT NULL COMMENT 'To warehouse id',
+  `shipment_handler_id` int(255) NOT NULL,
   `created_date` datetime NOT NULL DEFAULT current_timestamp() COMMENT 'Shipment created date',
   `start_date` datetime DEFAULT NULL COMMENT 'Shipment start date',
-  `end_date` datetime NOT NULL COMMENT 'Shipment end date'
+  `end_date` datetime DEFAULT NULL COMMENT 'Shipment end date'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
@@ -185,8 +199,8 @@ ALTER TABLE `manager_details`
 ALTER TABLE `order_details`
   ADD PRIMARY KEY (`order_id`),
   ADD KEY `sender_id` (`sender_id`),
-  ADD KEY `destination_warehouse` (`destination_warehouse`),
-  ADD KEY `admission_warehouse` (`admission_warehouse`);
+  ADD KEY `destination_warehouse` (`destination_warehouse_id`),
+  ADD KEY `admission_warehouse` (`admission_warehouse_id`);
 
 --
 -- Indexes for table `order_quality_check`
@@ -221,9 +235,16 @@ ALTER TABLE `sender_details`
 -- Indexes for table `shipment_details`
 --
 ALTER TABLE `shipment_details`
+  ADD PRIMARY KEY (`shipment_id`,`order_id`);
+
+--
+-- Indexes for table `shipment_master`
+--
+ALTER TABLE `shipment_master`
   ADD PRIMARY KEY (`shipment_id`),
   ADD KEY `from_warehouse_id` (`from_warehouse_id`),
-  ADD KEY `to_warehouse_id` (`to_warehouse_id`);
+  ADD KEY `to_warehouse_id` (`to_warehouse_id`),
+  ADD KEY `shipment_handler_id` (`shipment_handler_id`);
 
 --
 -- Indexes for table `warehouse_details`
@@ -288,9 +309,9 @@ ALTER TABLE `sender_details`
   MODIFY `sender_id` int(255) NOT NULL AUTO_INCREMENT COMMENT 'Sender Id';
 
 --
--- AUTO_INCREMENT for table `shipment_details`
+-- AUTO_INCREMENT for table `shipment_master`
 --
-ALTER TABLE `shipment_details`
+ALTER TABLE `shipment_master`
   MODIFY `shipment_id` int(255) NOT NULL AUTO_INCREMENT COMMENT 'Shipment details';
 
 --
@@ -326,8 +347,8 @@ ALTER TABLE `manager_details`
 --
 ALTER TABLE `order_details`
   ADD CONSTRAINT `order_details_ibfk_1` FOREIGN KEY (`sender_id`) REFERENCES `sender_details` (`sender_id`) ON UPDATE CASCADE,
-  ADD CONSTRAINT `order_details_ibfk_2` FOREIGN KEY (`admission_warehouse`) REFERENCES `warehouse_details` (`warehouse_id`) ON UPDATE CASCADE,
-  ADD CONSTRAINT `order_details_ibfk_3` FOREIGN KEY (`destination_warehouse`) REFERENCES `warehouse_details` (`warehouse_id`) ON UPDATE CASCADE;
+  ADD CONSTRAINT `order_details_ibfk_2` FOREIGN KEY (`admission_warehouse_id`) REFERENCES `warehouse_details` (`warehouse_id`) ON UPDATE CASCADE,
+  ADD CONSTRAINT `order_details_ibfk_3` FOREIGN KEY (`destination_warehouse_id`) REFERENCES `warehouse_details` (`warehouse_id`) ON UPDATE CASCADE;
 
 --
 -- Constraints for table `order_quality_check`
@@ -344,11 +365,11 @@ ALTER TABLE `order_status`
   ADD CONSTRAINT `order_status_ibfk_2` FOREIGN KEY (`handler_id`) REFERENCES `handler_details` (`handler_id`) ON UPDATE CASCADE;
 
 --
--- Constraints for table `shipment_details`
+-- Constraints for table `shipment_master`
 --
-ALTER TABLE `shipment_details`
-  ADD CONSTRAINT `shipment_details_ibfk_1` FOREIGN KEY (`from_warehouse_id`) REFERENCES `warehouse_details` (`warehouse_id`) ON UPDATE CASCADE,
-  ADD CONSTRAINT `shipment_details_ibfk_2` FOREIGN KEY (`to_warehouse_id`) REFERENCES `warehouse_details` (`warehouse_id`) ON UPDATE CASCADE;
+ALTER TABLE `shipment_master`
+  ADD CONSTRAINT `shipment_master_ibfk_1` FOREIGN KEY (`from_warehouse_id`) REFERENCES `warehouse_details` (`warehouse_id`) ON UPDATE CASCADE,
+  ADD CONSTRAINT `shipment_master_ibfk_2` FOREIGN KEY (`to_warehouse_id`) REFERENCES `warehouse_details` (`warehouse_id`) ON UPDATE CASCADE;
 
 --
 -- Constraints for table `warehouse_quality_check`

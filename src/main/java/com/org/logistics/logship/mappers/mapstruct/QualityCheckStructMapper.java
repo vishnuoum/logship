@@ -1,6 +1,6 @@
 package com.org.logistics.logship.mappers.mapstruct;
 
-import com.org.logistics.logship.dao.QualityCheckObject;
+import com.org.logistics.logship.dto.QualityCheckObject;
 import com.org.logistics.logship.provider.request.AddQualityCheckRequest;
 import com.org.logistics.logship.provider.response.AddQualityCheckResponse;
 import org.mapstruct.Mapper;

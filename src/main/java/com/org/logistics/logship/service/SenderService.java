@@ -1,6 +1,6 @@
 package com.org.logistics.logship.service;
 
-import com.org.logistics.logship.dao.SenderDetails;
+import com.org.logistics.logship.dto.SenderDetails;
 import com.org.logistics.logship.mappers.mapstruct.SenderStructMapper;
 import com.org.logistics.logship.persistence.helper.SenderHelper;
 import com.org.logistics.logship.provider.request.RegisterSenderRequest;

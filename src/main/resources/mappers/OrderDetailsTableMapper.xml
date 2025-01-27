@@ -4,10 +4,27 @@
 
 <mapper namespace="com.org.logistics.logship.mappers.mybatis.OrderDetailsTableMapper">
 
+    <resultMap id="orderDetails" type="OrderDetails">
+        <id property="orderId" column="order_id"/>
+        <result property="orderName" column="order_name"/>
+        <result property="orderNote" column="order_note"/>
+        <result property="senderId" column="sender_id"/>
+        <result property="fragile" column="fragile"/>
+        <result property="admissionWarehouseId" column="admission_warehouse_id"/>
+        <result property="destinationWarehouseId" column="destination_warehouse_id"/>
+        <result property="createdDate" column="created_date"/>
+        <result property="lastUpdatedDate" column="last_updated_date"/>
+        <result property="data" column="data"/>
+    </resultMap>
+
 
     <!-- Create new order -->
     <insert id="insertOrderDetails" useGeneratedKeys="true" keyProperty="orderId" keyColumn="order_id" parameterType="OrderDetails">
-        INSERT INTO order_details (order_name, order_note, sender_id, fragile, admission_warehouse, destination_warehouse) VALUES (#{orderName}, #{orderNote}, #{senderId}, #{fragile}, #{admissionWarehouseId}, #{destinationWarehouseId});
+        INSERT INTO order_details (order_name, order_note, sender_id, fragile, admission_warehouse_id, destination_warehouse_id) VALUES (#{orderName}, #{orderNote}, #{senderId}, #{fragile}, #{admissionWarehouseId}, #{destinationWarehouseId});
     </insert>
+
+    <select id="getOrderDetails" parameterType="java.lang.Integer" resultMap="orderDetails">
+        Select * from order_details where order_id=#{orderId};
+    </select>
 
 </mapper>

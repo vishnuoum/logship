@@ -6,7 +6,7 @@ import org.apache.ibatis.annotations.Param;
 import java.util.List;
 
 @Mapper
-public interface OrderQualityCheckTableMapper {
+public interface ShipmentDetailsTableMapper {
 
-    void insertOrderQualityChecks(@Param("order_id") Integer orderId, @Param("quality_check_ids") List<Integer> qcIds);
+    void addOrdersToShipment(@Param("shipmentId") Integer shipmentId, @Param("orders") List<Integer> orders);
 }

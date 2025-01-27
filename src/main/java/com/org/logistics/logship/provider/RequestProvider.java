@@ -1,15 +1,12 @@
 package com.org.logistics.logship.provider;
 
-import com.org.logistics.logship.provider.request.AddQualityCheckRequest;
-import com.org.logistics.logship.provider.request.PlaceOrderRequest;
-import com.org.logistics.logship.provider.request.RegisterSenderRequest;
-import com.org.logistics.logship.provider.response.AddQualityCheckResponse;
-import com.org.logistics.logship.provider.response.PlaceOrderResponse;
-import com.org.logistics.logship.provider.response.RegisterSenderResponse;
+import com.org.logistics.logship.provider.request.*;
+import com.org.logistics.logship.provider.response.*;
 import com.org.logistics.logship.service.OrderService;
 import com.org.logistics.logship.service.QualityCheckService;
 import com.org.logistics.logship.service.SenderService;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.org.logistics.logship.service.ShipmentService;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -18,11 +15,13 @@ public class RequestProvider {
 
     private final OrderService orderService;
     private final SenderService senderService;
+    private final ShipmentService shipmentService;
     private final QualityCheckService qualityCheckService;
 
-    RequestProvider(OrderService orderService, SenderService senderService, QualityCheckService qualityCheckService) {
+    RequestProvider(OrderService orderService, SenderService senderService, ShipmentService shipmentService, QualityCheckService qualityCheckService) {
         this.orderService = orderService;
         this.senderService = senderService;
+        this.shipmentService = shipmentService;
         this.qualityCheckService = qualityCheckService;
     }
 
@@ -42,8 +41,9 @@ public class RequestProvider {
     }
 
     @PutMapping("/updateOrderStatus")
-    public ResponseEntity<?> updateOrderStatus() {
-        return null;
+    public ResponseEntity<HttpStatus> updateOrderStatus(@RequestBody UpdateOrderStatusRequest updateOrderStatusRequest) {
+        orderService.updateOrderStatus(updateOrderStatusRequest);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @PostMapping("/doQualityCheck")
@@ -57,17 +57,18 @@ public class RequestProvider {
     }
 
     @PostMapping("/createShipment")
-    public ResponseEntity<?> createShipment() {
-        return null;
+    public ResponseEntity<CreateShipmentResponse> createShipment(@RequestBody CreateShipmentRequest shipmentRequest) {
+        return shipmentService.createShipment(shipmentRequest);
     }
 
     @PostMapping("/addShipmentOrders")
-    public ResponseEntity<?> addShipmentOrders() {
-        return null;
+    public ResponseEntity<AddShipmentOrdersResponse> addShipmentOrders(@RequestBody AddShipmentOrdersRequest addShipmentOrdersRequest) {
+        return shipmentService.addShipmentOrders(addShipmentOrdersRequest);
     }
 
-    @GetMapping("/trackShipment")
-    public ResponseEntity<?> trackShipment() {
-        return null;
+    @PutMapping("/endShipment/{shipmentId}")
+    public ResponseEntity<HttpStatus> endShipment(@PathVariable("shipmentId") String shipmentId) {
+        shipmentService.endShipment(shipmentId);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 }

@@ -1,6 +1,6 @@
 package com.org.logistics.logship.mappers.mapstruct;
 
-import com.org.logistics.logship.dao.SenderDetails;
+import com.org.logistics.logship.dto.SenderDetails;
 import com.org.logistics.logship.provider.request.RegisterSenderRequest;
 import com.org.logistics.logship.provider.response.RegisterSenderResponse;
 import org.mapstruct.Mapper;

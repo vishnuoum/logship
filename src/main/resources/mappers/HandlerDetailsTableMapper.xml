@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.org.logistics.logship.mappers.mybatis.HandlerDetailsTableMapper">
+
+    <resultMap id="handlerDetails" type="HandlerDetails">
+        <id property="handlerId" column="handler_id"/>
+        <result property="handlerName" column="handler_name"/>
+        <result property="warehouseId" column="warehouse_id "/>
+        <result property="joinedDate" column="joined_date"/>
+    </resultMap>
+
+    <select id="getHandlerDetails" parameterType="java.lang.Integer" resultMap="handlerDetails">
+        Select * from handler_details where handler_id=#{orderId};
+    </select>
+
+</mapper>
