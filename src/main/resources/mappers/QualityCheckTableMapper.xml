@@ -4,10 +4,22 @@
 
 <mapper namespace="com.org.logistics.logship.mappers.mybatis.QualityCheckTableMapper">
 
+    <resultMap id="qualityCheck" type="QualityCheckObject">
+        <id column="quality_check_id" property="qualityCheckId"/>
+        <result column="quality_check_name" property="qualityCheckName"/>
+        <result column="description" property="description"/>
+    </resultMap>
+
 
     <!-- Create new Quality Check -->
     <insert id="insertQualityCheck" useGeneratedKeys="true" keyProperty="qualityCheckId" keyColumn="quality_check_id" parameterType="OrderDetails">
         INSERT INTO quality_check_list (quality_check_name, description) VALUES (#{qualityCheckName}, #{description});
     </insert>
+
+    <select id="getAllQCForOrder" parameterType="java.lang.Integer" resultMap="qualityCheck">
+        Select * from quality_check_list where quality_check_id in (
+            Select quality_check_id from order_quality_check where order_id = #{orderId}
+        );
+    </select>
 
 </mapper>

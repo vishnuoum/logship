@@ -9,4 +9,5 @@ public class UpdateOrderStatusRequest {
 
     private String handlerId;
     private String orderId;
+    private String shipmentId;
 }

@@ -76,4 +76,13 @@ public class ShipmentHelper {
             throw new LogShipErrorResponse("DB_ERROR", "Error while ending shipment", HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+
+    public void updateTakeInDate(Integer shipmentId, Integer orderId) {
+        try {
+            shipmentDetailsTableMapper.updateTakeInDate(shipmentId, orderId);
+        } catch (Exception e) {
+            LoggerUtil.printError(e.getMessage());
+            throw new LogShipErrorResponse("DB_ERROR", "Error while updating shipment take in date", HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
 }

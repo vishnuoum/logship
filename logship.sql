@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jan 27, 2025 at 04:15 PM
+-- Generation Time: Feb 02, 2025 at 08:36 AM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -33,6 +33,13 @@ CREATE TABLE `handler_details` (
   `warehouse_id` int(255) NOT NULL COMMENT 'Warehouse to which handler belongs to',
   `joined_date` datetime NOT NULL DEFAULT current_timestamp() COMMENT 'Date of joining'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `handler_details`
+--
+
+INSERT INTO `handler_details` (`handler_id`, `handler_name`, `warehouse_id`, `joined_date`) VALUES
+(10000, 'Handler', 1002, '2025-01-25 16:17:10');
 
 -- --------------------------------------------------------
 
@@ -66,6 +73,18 @@ CREATE TABLE `order_details` (
   `data` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL COMMENT 'Any additional json data' CHECK (json_valid(`data`))
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+--
+-- Dumping data for table `order_details`
+--
+
+INSERT INTO `order_details` (`order_id`, `order_name`, `order_note`, `sender_id`, `fragile`, `admission_warehouse_id`, `destination_warehouse_id`, `created_date`, `last_updated_date`, `data`) VALUES
+(100026, 'Order 1', 'None', 10000, 0, 1001, 1002, '2025-01-25 16:16:31', '2025-01-25 16:16:31', NULL),
+(100027, 'Order 1', 'None', 10000, 0, 1001, 1002, '2025-01-25 16:17:23', '2025-01-25 16:17:23', NULL),
+(100029, 'Order 1', 'None', 10000, 0, 1001, 1002, '2025-01-25 16:21:34', '2025-01-25 16:21:34', NULL),
+(100032, 'New Order', 'Fragile', 10000, 1, 1001, 1002, '2025-01-27 15:16:03', '2025-01-27 15:16:03', NULL),
+(100033, 'Order name', 'None', 10000, 1, 1001, 1002, '2025-01-27 19:39:58', '2025-01-27 19:39:58', NULL),
+(100035, 'Biscuits', 'None', 10000, 0, 1001, 1002, '2025-02-02 10:41:35', '2025-02-02 10:41:35', NULL);
+
 -- --------------------------------------------------------
 
 --
@@ -77,6 +96,17 @@ CREATE TABLE `order_quality_check` (
   `order_id` int(255) NOT NULL COMMENT 'Order Id',
   `quality_check_id` int(11) NOT NULL COMMENT 'Quality check id'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `order_quality_check`
+--
+
+INSERT INTO `order_quality_check` (`order_check_id`, `order_id`, `quality_check_id`) VALUES
+(3, 100027, 1),
+(4, 100029, 1),
+(5, 100032, 1),
+(6, 100033, 1),
+(7, 100035, 1);
 
 -- --------------------------------------------------------
 
@@ -92,6 +122,25 @@ CREATE TABLE `order_status` (
   `created_date` datetime NOT NULL DEFAULT current_timestamp() COMMENT 'Datetime when order status is updated'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+--
+-- Dumping data for table `order_status`
+--
+
+INSERT INTO `order_status` (`status_id`, `order_id`, `handler_id`, `status`, `created_date`) VALUES
+(3, 100027, 10000, 'OC', '2025-01-25 16:17:23'),
+(5, 100029, 10000, 'OC', '2025-01-25 16:21:34'),
+(6, 100032, 10000, 'OC', '2025-01-27 15:16:03'),
+(7, 100033, 10000, 'OC', '2025-01-27 19:39:58'),
+(8, 100033, 10000, 'IT', '2025-01-27 19:56:34'),
+(9, 100033, 10000, 'IMW', '2025-01-27 20:18:15'),
+(10, 100033, 10000, 'IMW', '2025-01-27 20:33:50'),
+(11, 100033, 10000, 'IMW', '2025-01-27 20:34:59'),
+(12, 100033, 10000, 'OD', '2025-01-27 20:37:54'),
+(13, 100033, 10000, 'OD', '2025-01-27 20:40:32'),
+(14, 100035, 10000, 'OC', '2025-02-02 10:41:35'),
+(15, 100035, 10000, 'IT', '2025-02-02 10:43:36'),
+(16, 100035, 10000, 'OD', '2025-02-02 10:46:28');
+
 -- --------------------------------------------------------
 
 --
@@ -103,6 +152,13 @@ CREATE TABLE `quality_check_list` (
   `quality_check_name` varchar(100) NOT NULL COMMENT 'Type of Quality Check',
   `description` text DEFAULT NULL COMMENT 'Description for quality check'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `quality_check_list`
+--
+
+INSERT INTO `quality_check_list` (`quality_check_id`, `quality_check_name`, `description`) VALUES
+(1, 'Box Not Torn', 'Check whether the packing is torn during transit');
 
 -- --------------------------------------------------------
 
@@ -117,6 +173,13 @@ CREATE TABLE `sender_details` (
   `created_date` datetime NOT NULL DEFAULT current_timestamp() COMMENT 'Sender profile created date'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+--
+-- Dumping data for table `sender_details`
+--
+
+INSERT INTO `sender_details` (`sender_id`, `sender_phone`, `sender_mail`, `created_date`) VALUES
+(10000, '1234567890', NULL, '2025-01-25 14:22:54');
+
 -- --------------------------------------------------------
 
 --
@@ -127,8 +190,20 @@ CREATE TABLE `shipment_details` (
   `shipment_id` int(255) NOT NULL COMMENT 'Shipment id foreign key',
   `order_id` int(255) NOT NULL COMMENT 'Order Id foreign key',
   `added_date` datetime NOT NULL DEFAULT current_timestamp() COMMENT 'Shipment added date',
-  `end_date` datetime DEFAULT NULL COMMENT 'Shipment arrival date'
+  `arrival_take_in_date` datetime DEFAULT NULL COMMENT 'Shipment arrival date'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `shipment_details`
+--
+
+INSERT INTO `shipment_details` (`shipment_id`, `order_id`, `added_date`, `arrival_take_in_date`) VALUES
+(10001, 100026, '2025-01-26 12:52:38', NULL),
+(10001, 100027, '2025-01-26 12:52:38', NULL),
+(10001, 100029, '2025-01-26 12:52:38', NULL),
+(10003, 10032, '2025-01-27 15:17:53', NULL),
+(10004, 100033, '2025-01-27 19:40:45', NULL),
+(10005, 100035, '2025-02-02 10:43:22', NULL);
 
 -- --------------------------------------------------------
 
@@ -146,6 +221,19 @@ CREATE TABLE `shipment_master` (
   `end_date` datetime DEFAULT NULL COMMENT 'Shipment end date'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+--
+-- Dumping data for table `shipment_master`
+--
+
+INSERT INTO `shipment_master` (`shipment_id`, `from_warehouse_id`, `to_warehouse_id`, `shipment_handler_id`, `created_date`, `start_date`, `end_date`) VALUES
+(1, 1002, 1001, 0, '2025-01-26 09:31:22', NULL, NULL),
+(10000, 1002, 1001, 0, '2025-01-26 09:31:56', NULL, NULL),
+(10001, 1002, 1001, 0, '2025-01-26 09:44:22', NULL, NULL),
+(10002, 1002, 1001, 0, '2025-01-26 12:51:36', NULL, NULL),
+(10003, 1002, 1002, 10000, '2025-01-27 15:16:51', NULL, NULL),
+(10004, 1002, 1002, 10000, '2025-01-27 19:40:28', '2025-01-27 19:56:34', NULL),
+(10005, 1002, 1002, 10000, '2025-02-02 10:43:00', '2025-02-02 10:43:36', '2025-02-02 10:44:05');
+
 -- --------------------------------------------------------
 
 --
@@ -157,6 +245,14 @@ CREATE TABLE `warehouse_details` (
   `warehouse_name` varchar(100) NOT NULL COMMENT 'Warehouse Name',
   `address` text NOT NULL COMMENT 'Warehouse address'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `warehouse_details`
+--
+
+INSERT INTO `warehouse_details` (`warehouse_id`, `warehouse_name`, `address`) VALUES
+(1001, 'Thrissur Warehouse', 'Thrissur'),
+(1002, 'Kochi Warehouse', 'Ernakulam');
 
 -- --------------------------------------------------------
 
@@ -170,10 +266,16 @@ CREATE TABLE `warehouse_quality_check` (
   `warehouse_id` int(255) NOT NULL COMMENT 'Warehouse Id',
   `handler_id` int(255) NOT NULL COMMENT 'Handler id',
   `quality_check_id` int(255) NOT NULL COMMENT 'quality Check Id',
-  `status` enum('PASS','FAIL','PENDING') NOT NULL DEFAULT 'PENDING' COMMENT 'Status of QC',
-  `created_date` datetime NOT NULL DEFAULT current_timestamp() COMMENT 'created date of entry',
-  `last_updated_date` datetime DEFAULT NULL COMMENT 'last updated date of entry'
+  `status` enum('PASS','FAIL') NOT NULL COMMENT 'Status of QC',
+  `created_date` datetime NOT NULL DEFAULT current_timestamp() COMMENT 'created date of entry'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `warehouse_quality_check`
+--
+
+INSERT INTO `warehouse_quality_check` (`entry_id`, `order_id`, `warehouse_id`, `handler_id`, `quality_check_id`, `status`, `created_date`) VALUES
+(1, 100035, 1002, 10000, 1, 'PASS', '2025-02-02 12:59:15');
 
 --
 -- Indexes for dumped tables
@@ -270,61 +372,61 @@ ALTER TABLE `warehouse_quality_check`
 -- AUTO_INCREMENT for table `handler_details`
 --
 ALTER TABLE `handler_details`
-  MODIFY `handler_id` int(255) NOT NULL AUTO_INCREMENT COMMENT 'Handler ID - Autogenerated';
+  MODIFY `handler_id` int(255) NOT NULL AUTO_INCREMENT COMMENT 'Handler ID - Autogenerated', AUTO_INCREMENT=10001;
 
 --
 -- AUTO_INCREMENT for table `manager_details`
 --
 ALTER TABLE `manager_details`
-  MODIFY `manager_id` int(255) NOT NULL AUTO_INCREMENT COMMENT 'Manager Id - Auto generated';
+  MODIFY `manager_id` int(255) NOT NULL AUTO_INCREMENT COMMENT 'Manager Id - Auto generated', AUTO_INCREMENT=1001;
 
 --
 -- AUTO_INCREMENT for table `order_details`
 --
 ALTER TABLE `order_details`
-  MODIFY `order_id` int(255) NOT NULL AUTO_INCREMENT COMMENT 'Order id - autogenerated';
+  MODIFY `order_id` int(255) NOT NULL AUTO_INCREMENT COMMENT 'Order id - autogenerated', AUTO_INCREMENT=100036;
 
 --
 -- AUTO_INCREMENT for table `order_quality_check`
 --
 ALTER TABLE `order_quality_check`
-  MODIFY `order_check_id` int(255) NOT NULL AUTO_INCREMENT COMMENT 'Primary key entry id';
+  MODIFY `order_check_id` int(255) NOT NULL AUTO_INCREMENT COMMENT 'Primary key entry id', AUTO_INCREMENT=8;
 
 --
 -- AUTO_INCREMENT for table `order_status`
 --
 ALTER TABLE `order_status`
-  MODIFY `status_id` int(255) NOT NULL AUTO_INCREMENT COMMENT 'Status Id- autogenerated';
+  MODIFY `status_id` int(255) NOT NULL AUTO_INCREMENT COMMENT 'Status Id- autogenerated', AUTO_INCREMENT=17;
 
 --
 -- AUTO_INCREMENT for table `quality_check_list`
 --
 ALTER TABLE `quality_check_list`
-  MODIFY `quality_check_id` int(255) NOT NULL AUTO_INCREMENT COMMENT 'Quality Check Entry Id';
+  MODIFY `quality_check_id` int(255) NOT NULL AUTO_INCREMENT COMMENT 'Quality Check Entry Id', AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT for table `sender_details`
 --
 ALTER TABLE `sender_details`
-  MODIFY `sender_id` int(255) NOT NULL AUTO_INCREMENT COMMENT 'Sender Id';
+  MODIFY `sender_id` int(255) NOT NULL AUTO_INCREMENT COMMENT 'Sender Id', AUTO_INCREMENT=10001;
 
 --
 -- AUTO_INCREMENT for table `shipment_master`
 --
 ALTER TABLE `shipment_master`
-  MODIFY `shipment_id` int(255) NOT NULL AUTO_INCREMENT COMMENT 'Shipment details';
+  MODIFY `shipment_id` int(255) NOT NULL AUTO_INCREMENT COMMENT 'Shipment details', AUTO_INCREMENT=10006;
 
 --
 -- AUTO_INCREMENT for table `warehouse_details`
 --
 ALTER TABLE `warehouse_details`
-  MODIFY `warehouse_id` int(11) NOT NULL AUTO_INCREMENT COMMENT 'Warehouse Id';
+  MODIFY `warehouse_id` int(11) NOT NULL AUTO_INCREMENT COMMENT 'Warehouse Id', AUTO_INCREMENT=1003;
 
 --
 -- AUTO_INCREMENT for table `warehouse_quality_check`
 --
 ALTER TABLE `warehouse_quality_check`
-  MODIFY `entry_id` int(255) NOT NULL AUTO_INCREMENT COMMENT 'Entry Id - auto generated';
+  MODIFY `entry_id` int(255) NOT NULL AUTO_INCREMENT COMMENT 'Entry Id - auto generated', AUTO_INCREMENT=2;
 
 --
 -- Constraints for dumped tables

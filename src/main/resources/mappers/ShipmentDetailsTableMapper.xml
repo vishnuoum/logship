@@ -24,4 +24,9 @@
     <select id="getShipmentOrders" parameterType="java.lang.Integer" resultMap="shipmentDetails">
         Select * from shipment_details where shipment_id = #{shipmentUd}
     </select>
+
+    <update id="updateTakeInDate">
+        update shipment_details set arrival_take_in_date = NOW() where shipment_id = #{shipmentId}
+        and order_id = #{orderId};
+    </update>
 </mapper>

@@ -12,4 +12,6 @@ public interface ShipmentDetailsTableMapper {
     void addOrdersToShipment(@Param("shipmentId") Integer shipmentId, @Param("orders") List<Integer> orders);
 
     List<ShipmentDetails> getShipmentOrders(Integer shipmentId);
+
+    void updateTakeInDate(@Param("shipmentId") Integer shipmentId, @Param("orderId") Integer orderId);
 }

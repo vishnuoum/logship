@@ -46,14 +46,15 @@ public class RequestProvider {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
-    @PostMapping("/doQualityCheck")
-    public ResponseEntity<?> doQualityCheck() {
-        return null;
+    @PostMapping("/updateQCStatus")
+    public ResponseEntity<HttpStatus> doQualityCheck(@RequestBody UpdateQCStatusRequest updateQCStatusRequest) {
+        qualityCheckService.updateQCStatus(updateQCStatusRequest);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @GetMapping("/getAllQC/{orderId}")
-    public ResponseEntity<?> getAllQC(@PathVariable("orderId") String orderId) {
-        return null;
+    public ResponseEntity<GetAllQCResponse> getAllQC(@PathVariable("orderId") String orderId) {
+        return qualityCheckService.getAllQCForOrder(orderId);
     }
 
     @PostMapping("/createShipment")

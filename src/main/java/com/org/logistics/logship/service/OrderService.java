@@ -4,14 +4,20 @@ package com.org.logistics.logship.service;
 import com.org.logistics.logship.constants.Constants;
 import com.org.logistics.logship.dto.HandlerDetails;
 import com.org.logistics.logship.dto.OrderDetails;
+import com.org.logistics.logship.dto.QualityCheckObject;
 import com.org.logistics.logship.mappers.mapstruct.OrderStatusStructMapper;
 import com.org.logistics.logship.mappers.mapstruct.OrderStructMapper;
+import com.org.logistics.logship.mappers.mapstruct.QualityCheckStructMapper;
 import com.org.logistics.logship.persistence.helper.HandlerHelper;
 import com.org.logistics.logship.persistence.helper.OrderHelper;
+import com.org.logistics.logship.persistence.helper.QualityCheckHelper;
+import com.org.logistics.logship.persistence.helper.ShipmentHelper;
 import com.org.logistics.logship.provider.request.PlaceOrderRequest;
 import com.org.logistics.logship.provider.request.UpdateOrderStatusRequest;
+import com.org.logistics.logship.provider.response.GetAllQCResponse;
 import com.org.logistics.logship.provider.response.LogShipResponse;
 import com.org.logistics.logship.provider.response.PlaceOrderResponse;
+import com.org.logistics.logship.provider.response.bo.ModifiedQualityCheckObject;
 import com.org.logistics.logship.util.CommonUtil;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -26,13 +32,15 @@ public class OrderService {
 
     private final OrderHelper orderHelper;
     private final HandlerHelper handlerHelper;
+    private final ShipmentHelper shipmentHelper;
     private final OrderStructMapper orderStructMapper;
     private final OrderStatusStructMapper orderStatusStructMapper;
 
 
-    OrderService(OrderHelper orderHelper, HandlerHelper handlerHelper, OrderStructMapper orderStructMapper, OrderStatusStructMapper orderStatusStructMapper) {
+    OrderService(OrderHelper orderHelper, HandlerHelper handlerHelper, ShipmentHelper shipmentHelper, OrderStructMapper orderStructMapper, OrderStatusStructMapper orderStatusStructMapper) {
         this.orderHelper = orderHelper;
         this.handlerHelper = handlerHelper;
+        this.shipmentHelper = shipmentHelper;
         this.orderStructMapper = orderStructMapper;
         this.orderStatusStructMapper = orderStatusStructMapper;
     }
@@ -54,13 +62,17 @@ public class OrderService {
         return qualityCheckIds.stream().map(qc -> CommonUtil.extractNumberFromId(qc, Constants.QUALITY_CHECK_PREFIX)).toList();
     }
 
+    @Transactional
     public void updateOrderStatus(UpdateOrderStatusRequest updateOrderStatusRequest) {
-        OrderDetails orderDetails = orderHelper.getOrderDetails(CommonUtil.extractNumberFromId(updateOrderStatusRequest.getOrderId(), Constants.ORDER_PREFIX));
+        Integer orderId = CommonUtil.extractNumberFromId(updateOrderStatusRequest.getOrderId(), Constants.ORDER_PREFIX);
+        OrderDetails orderDetails = orderHelper.getOrderDetails(orderId);
         HandlerDetails handlerDetails = handlerHelper.getHandlerDetails(CommonUtil.extractNumberFromId(updateOrderStatusRequest.getHandlerId(), Constants.HANDLER_PREFIX));
         boolean isDestinationWarehouse = Optional.ofNullable(orderDetails).map(OrderDetails::getDestinationWarehouseId).orElse(0).equals(
                 Optional.ofNullable(handlerDetails).map(HandlerDetails::getWarehouseId).orElse(-1)
         );
         orderHelper.insertOrderStatus(orderStatusStructMapper.assembleStatus(updateOrderStatusRequest, isDestinationWarehouse?Constants.OrderStatus.OD.name():Constants.OrderStatus.IMW.name()));
+        shipmentHelper.updateTakeInDate(CommonUtil.extractNumberFromId(updateOrderStatusRequest.getShipmentId(), Constants.SHIPMENT_PREFIX), orderId);
     }
+
 
 }
