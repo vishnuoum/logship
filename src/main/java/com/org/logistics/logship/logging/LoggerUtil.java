@@ -1,6 +1,6 @@
 package com.org.logistics.logship.logging;
 
-import com.org.logistics.logship.exception.LogShipErrorResponse;
+import com.org.logistics.logship.exception.LogShipError;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -14,7 +14,7 @@ public class LoggerUtil {
     }
 
     public static void printError(Object message) {
-        Logger logger = LogManager.getLogger(LogShipErrorResponse.class);
+        Logger logger = LogManager.getLogger(LogShipError.class);
         logger.error(message);
     }
 

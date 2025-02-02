@@ -1,12 +1,12 @@
 package com.org.logistics.logship.persistence.helper;
 
 import com.org.logistics.logship.dto.QualityCheckObject;
-import com.org.logistics.logship.exception.LogShipErrorResponse;
+import com.org.logistics.logship.exception.ExceptionFactory;
+import static com.org.logistics.logship.exception.ExceptionManager.ErrorCode;
 import com.org.logistics.logship.logging.LoggerUtil;
 import com.org.logistics.logship.mappers.mybatis.OrderQualityCheckTableMapper;
 import com.org.logistics.logship.mappers.mybatis.QualityCheckTableMapper;
 import com.org.logistics.logship.mappers.mybatis.WarehouseQualityCheckTableMapper;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -29,8 +29,9 @@ public class QualityCheckHelper {
         try {
             qualityCheckTableMapper.insertNewQualityCheck(qualityCheckObject);
         } catch (Exception e) {
+            LoggerUtil.printError("Error while storing Quality Check details in DB");
             LoggerUtil.printError(e.getMessage());
-            throw new LogShipErrorResponse("DB_ERROR", "Error while storing Quality Check details in DB", HttpStatus.INTERNAL_SERVER_ERROR);
+            throw new ExceptionFactory().generateException(ErrorCode.DB_WRITE_ERROR);
         }
     }
 
@@ -38,8 +39,9 @@ public class QualityCheckHelper {
         try {
             orderQualityCheckTableMapper.insertOrderQualityChecks(orderId, qcIds);
         } catch (Exception e) {
+            LoggerUtil.printError("Error while storing order quality check details in DB");
             LoggerUtil.printError(e.getMessage());
-            throw new LogShipErrorResponse("DB_ERROR", "Error while storing order quality check details in DB", HttpStatus.INTERNAL_SERVER_ERROR);
+            throw new ExceptionFactory().generateException(ErrorCode.DB_WRITE_ERROR);
         }
     }
 
@@ -47,8 +49,9 @@ public class QualityCheckHelper {
         try {
             return qualityCheckTableMapper.getAllQCForOrder(orderId);
         } catch (Exception e) {
+            LoggerUtil.printError("Error while fetching Order Quality Check details from DB");
             LoggerUtil.printError(e.getMessage());
-            throw new LogShipErrorResponse("DB_ERROR", "Error while fetching Order Quality Check details from DB", HttpStatus.INTERNAL_SERVER_ERROR);
+            throw new ExceptionFactory().generateException(ErrorCode.DB_READ_ERROR);
         }
     }
 
@@ -56,8 +59,9 @@ public class QualityCheckHelper {
         try {
             warehouseQualityCheckTableMapper.insertWarehouseQualityCheckStatus(orderId, handlerId, warehouseId, qualityMap);
         } catch (Exception e) {
+            LoggerUtil.printError("Error while updating Order Quality Check details from DB");
             LoggerUtil.printError(e.getMessage());
-            throw new LogShipErrorResponse("DB_ERROR", "Error while fetching Order Quality Check details from DB", HttpStatus.INTERNAL_SERVER_ERROR);
+            throw new ExceptionFactory().generateException(ErrorCode.DB_WRITE_ERROR);
         }
     }
 }

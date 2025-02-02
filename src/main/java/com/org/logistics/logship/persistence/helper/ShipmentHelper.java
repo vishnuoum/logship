@@ -1,9 +1,10 @@
 package com.org.logistics.logship.persistence.helper;
 
-import com.org.logistics.logship.dto.OrderDetails;
 import com.org.logistics.logship.dto.ShipmentDetails;
 import com.org.logistics.logship.dto.ShipmentMaster;
-import com.org.logistics.logship.exception.LogShipErrorResponse;
+import com.org.logistics.logship.exception.ExceptionFactory;
+import static com.org.logistics.logship.exception.ExceptionManager.ErrorCode;
+import com.org.logistics.logship.exception.LogShipError;
 import com.org.logistics.logship.logging.LoggerUtil;
 import com.org.logistics.logship.mappers.mybatis.ShipmentDetailsTableMapper;
 import com.org.logistics.logship.mappers.mybatis.ShipmentMasterTableMapper;
@@ -27,8 +28,9 @@ public class ShipmentHelper {
         try {
             shipmentMasterTableMapper.insertShipment(shipmentMaster);
         } catch (Exception e) {
+            LoggerUtil.printError("Error while creating shipment");
             LoggerUtil.printError(e.getMessage());
-            throw new LogShipErrorResponse("DB_ERROR", "Error while creating shipment", HttpStatus.INTERNAL_SERVER_ERROR);
+            throw new ExceptionFactory().generateException(ErrorCode.DB_WRITE_ERROR);
         }
     }
 
@@ -36,8 +38,9 @@ public class ShipmentHelper {
         try {
             shipmentDetailsTableMapper.addOrdersToShipment(shipmentId, orders);
         } catch (Exception e) {
+            LoggerUtil.printError("Error while adding orders to shipment");
             LoggerUtil.printError(e.getMessage());
-            throw new LogShipErrorResponse("DB_ERROR", "Error while adding orders to shipment", HttpStatus.INTERNAL_SERVER_ERROR);
+            throw new ExceptionFactory().generateException(ErrorCode.DB_WRITE_ERROR);
         }
     }
 
@@ -45,8 +48,9 @@ public class ShipmentHelper {
         try {
             shipmentMasterTableMapper.startShipment(shipmentId);
         } catch (Exception e) {
+            LoggerUtil.printError("Error while updating the start time of shipment");
             LoggerUtil.printError(e.getMessage());
-            throw new LogShipErrorResponse("DB_ERROR", "Error while updating the start time of shipment", HttpStatus.INTERNAL_SERVER_ERROR);
+            throw new ExceptionFactory().generateException(ErrorCode.DB_WRITE_ERROR);
         }
     }
 
@@ -54,8 +58,9 @@ public class ShipmentHelper {
         try {
             return shipmentMasterTableMapper.getShipmentMaster(shipmentId);
         } catch (Exception e) {
+            LoggerUtil.printError("Error while fetching shipment master details");
             LoggerUtil.printError(e.getMessage());
-            throw new LogShipErrorResponse("DB_ERROR", "Error while fetching shipment master details", HttpStatus.INTERNAL_SERVER_ERROR);
+            throw new ExceptionFactory().generateException(ErrorCode.DB_READ_ERROR);
         }
     }
 
@@ -63,8 +68,9 @@ public class ShipmentHelper {
         try {
             return shipmentDetailsTableMapper.getShipmentOrders(shipmentId);
         } catch (Exception e) {
+            LoggerUtil.printError("Error while fetching shipment orders from DB");
             LoggerUtil.printError(e.getMessage());
-            throw new LogShipErrorResponse("DB_ERROR", "Error while fetching shipment orders from DB", HttpStatus.INTERNAL_SERVER_ERROR);
+            throw new ExceptionFactory().generateException(ErrorCode.DB_READ_ERROR);
         }
     }
 
@@ -72,8 +78,9 @@ public class ShipmentHelper {
         try {
             shipmentMasterTableMapper.endShipment(shipmentId);
         } catch (Exception e) {
+            LoggerUtil.printError("Error while ending shipment");
             LoggerUtil.printError(e.getMessage());
-            throw new LogShipErrorResponse("DB_ERROR", "Error while ending shipment", HttpStatus.INTERNAL_SERVER_ERROR);
+            throw new ExceptionFactory().generateException(ErrorCode.DB_WRITE_ERROR);
         }
     }
 
@@ -81,8 +88,9 @@ public class ShipmentHelper {
         try {
             shipmentDetailsTableMapper.updateTakeInDate(shipmentId, orderId);
         } catch (Exception e) {
+            LoggerUtil.printError("Error while updating shipment take in date");
             LoggerUtil.printError(e.getMessage());
-            throw new LogShipErrorResponse("DB_ERROR", "Error while updating shipment take in date", HttpStatus.INTERNAL_SERVER_ERROR);
+            throw new ExceptionFactory().generateException(ErrorCode.DB_WRITE_ERROR);
         }
     }
 }
