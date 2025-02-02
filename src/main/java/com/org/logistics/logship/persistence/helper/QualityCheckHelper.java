@@ -34,12 +34,12 @@ public class QualityCheckHelper {
         }
     }
 
-    public void addOrderQualityChecks(Integer orderId, List<Integer> qualityCheckIds) {
+    public void insertOrderQualityChecks(Integer orderId, List<Integer> qcIds) {
         try {
-            orderQualityCheckTableMapper.insertOrderQualityChecks(orderId, qualityCheckIds);
+            orderQualityCheckTableMapper.insertOrderQualityChecks(orderId, qcIds);
         } catch (Exception e) {
             LoggerUtil.printError(e.getMessage());
-            throw new LogShipErrorResponse("DB_ERROR", "Error while storing Order Quality Check details in DB", HttpStatus.INTERNAL_SERVER_ERROR);
+            throw new LogShipErrorResponse("DB_ERROR", "Error while storing order quality check details in DB", HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 

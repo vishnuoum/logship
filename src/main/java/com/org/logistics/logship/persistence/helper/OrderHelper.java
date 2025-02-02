@@ -34,15 +34,6 @@ public class OrderHelper {
         }
     }
 
-    public void insertOrderQualityChecks(Integer orderId, List<Integer> qcIds) {
-        try {
-            orderQualityCheckTableMapper.insertOrderQualityChecks(orderId, qcIds);
-        } catch (Exception e) {
-            LoggerUtil.printError(e.getMessage());
-            throw new LogShipErrorResponse("DB_ERROR", "Error while storing order quality check details in DB", HttpStatus.INTERNAL_SERVER_ERROR);
-        }
-    }
-
     public void insertOrderStatus(OrderStatus orderStatus) {
         try {
             orderStatusTableMapper.insertOrderStatus(orderStatus);

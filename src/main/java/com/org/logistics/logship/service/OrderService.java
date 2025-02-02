@@ -34,14 +34,16 @@ public class OrderService {
     private final HandlerHelper handlerHelper;
     private final ShipmentHelper shipmentHelper;
     private final OrderStructMapper orderStructMapper;
+    private final QualityCheckHelper qualityCheckHelper;
     private final OrderStatusStructMapper orderStatusStructMapper;
 
 
-    OrderService(OrderHelper orderHelper, HandlerHelper handlerHelper, ShipmentHelper shipmentHelper, OrderStructMapper orderStructMapper, OrderStatusStructMapper orderStatusStructMapper) {
+    OrderService(OrderHelper orderHelper, HandlerHelper handlerHelper, ShipmentHelper shipmentHelper, OrderStructMapper orderStructMapper, QualityCheckHelper qualityCheckHelper, OrderStatusStructMapper orderStatusStructMapper) {
         this.orderHelper = orderHelper;
         this.handlerHelper = handlerHelper;
         this.shipmentHelper = shipmentHelper;
         this.orderStructMapper = orderStructMapper;
+        this.qualityCheckHelper = qualityCheckHelper;
         this.orderStatusStructMapper = orderStatusStructMapper;
     }
 
@@ -54,7 +56,7 @@ public class OrderService {
         OrderDetails orderDetails = orderStructMapper.requestToOrderDetails(orderRequest);
         orderHelper.insertOrderDetails(orderDetails);
         orderHelper.insertOrderStatus(orderStatusStructMapper.assembleStatus(orderRequest, orderDetails, Constants.OrderStatus.OC.name()));
-        orderHelper.insertOrderQualityChecks(orderDetails.getOrderId(), extractQualityCheckIds(orderRequest.getQualityCheckIds()));
+        qualityCheckHelper.insertOrderQualityChecks(orderDetails.getOrderId(), extractQualityCheckIds(orderRequest.getQualityCheckIds()));
         return orderStructMapper.orderDetailsToPlaceOrderResponse(orderDetails);
     }
 
