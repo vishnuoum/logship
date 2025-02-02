@@ -2,13 +2,12 @@ package com.org.logistics.logship.persistence.helper;
 
 import com.org.logistics.logship.dto.OrderDetails;
 import com.org.logistics.logship.dto.OrderStatus;
-import com.org.logistics.logship.exception.ExceptionFactory;
 import static com.org.logistics.logship.exception.ExceptionManager.ErrorCode;
-import com.org.logistics.logship.exception.LogShipError;
+
+import com.org.logistics.logship.exception.ExceptionManager;
 import com.org.logistics.logship.logging.LoggerUtil;
 import com.org.logistics.logship.mappers.mybatis.OrderDetailsTableMapper;
 import com.org.logistics.logship.mappers.mybatis.OrderStatusTableMapper;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -30,7 +29,7 @@ public class OrderHelper {
         } catch (Exception e) {
             LoggerUtil.printError("Error while storing order details in DB");
             LoggerUtil.printError(e.getMessage());
-            throw new ExceptionFactory().generateException(ErrorCode.DB_WRITE_ERROR);
+            throw ExceptionManager.exceptionFactory.generateException(ErrorCode.DB_WRITE_ERROR);
         }
     }
 
@@ -50,7 +49,7 @@ public class OrderHelper {
         } catch (Exception e) {
             LoggerUtil.printError("Error while storing order status details in DB");
             LoggerUtil.printError(e.getMessage());
-            throw new ExceptionFactory().generateException(ErrorCode.DB_WRITE_ERROR);
+            throw ExceptionManager.exceptionFactory.generateException(ErrorCode.DB_WRITE_ERROR);
         }
     }
 
@@ -60,7 +59,7 @@ public class OrderHelper {
         } catch (Exception e) {
             LoggerUtil.printError("Error while fetching order details in DB");
             LoggerUtil.printError(e.getMessage());
-            throw new ExceptionFactory().generateException(ErrorCode.DB_READ_ERROR);
+            throw ExceptionManager.exceptionFactory.generateException(ErrorCode.DB_READ_ERROR);
         }
     }
 }

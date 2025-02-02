@@ -1,4 +1,4 @@
-package com.org.logistics.logship.exception;
+package com.org.logistics.logship.exception.model;
 
 
 import lombok.Getter;
@@ -8,19 +8,19 @@ import org.springframework.http.HttpStatusCode;
 
 @Getter
 @Setter
-public class LogShipError extends RuntimeException {
+public class LogShipException extends RuntimeException {
 
     private final String errorCode;
     private final String errorMessage;
     private final HttpStatusCode httpStatusCode;
 
-    public LogShipError(String errorCode, String errorMessage, HttpStatusCode httpStatusCode) {
+    public LogShipException(String errorCode, String errorMessage, HttpStatusCode httpStatusCode) {
         this.errorCode = errorCode;
         this.errorMessage = errorMessage;
         this.httpStatusCode = httpStatusCode;
     }
 
-    public LogShipError(String errorCode, String errorMessage) {
+    public LogShipException(String errorCode, String errorMessage) {
         this.errorCode = errorCode;
         this.errorMessage = errorMessage;
         this.httpStatusCode = HttpStatus.INTERNAL_SERVER_ERROR;

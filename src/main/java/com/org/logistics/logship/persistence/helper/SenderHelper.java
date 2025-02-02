@@ -1,8 +1,9 @@
 package com.org.logistics.logship.persistence.helper;
 
 import com.org.logistics.logship.dto.SenderDetails;
-import com.org.logistics.logship.exception.ExceptionFactory;
 import static com.org.logistics.logship.exception.ExceptionManager.ErrorCode;
+
+import com.org.logistics.logship.exception.ExceptionManager;
 import com.org.logistics.logship.logging.LoggerUtil;
 import com.org.logistics.logship.mappers.mybatis.SenderDetailsTableMapper;
 import org.springframework.stereotype.Component;
@@ -22,7 +23,7 @@ public class SenderHelper {
         } catch (Exception e) {
             LoggerUtil.printError("Error while storing Sender details in DB");
             LoggerUtil.printError(e.getMessage());
-            throw new ExceptionFactory().generateException(ErrorCode.DB_WRITE_ERROR);
+            throw ExceptionManager.exceptionFactory.generateException(ErrorCode.DB_WRITE_ERROR);
         }
     }
 }
