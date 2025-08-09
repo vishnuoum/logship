@@ -1,0 +1,6 @@
+spring:
+  application:
+    name: User Service
+
+  config:
+    import: classpath:/properties/app.properties, optional:classpath:/properties/secret.properties
