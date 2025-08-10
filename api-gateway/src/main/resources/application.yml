@@ -14,8 +14,8 @@ spring:
             - name: JwtAuthentication
 
         - id: order-service
-          uri: http://localhost:6000
+          uri: http://localhost:5002
           predicates:
-            - Path=/orders/**
+            - Path=/order/**
           filters:
             - name: JwtAuthentication

@@ -1,4 +1,4 @@
-package com.logship.api.gateway.entity;
+package com.logship.order.service.entity;
 
 import jakarta.persistence.*;
 import lombok.Getter;
