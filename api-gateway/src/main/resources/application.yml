@@ -1,0 +1,21 @@
+spring:
+  application:
+    name: api-gateway
+  config:
+    import: classpath:/properties/app.properties, optional:classpath:/properties/secret.properties
+  cloud:
+    gateway:
+      routes:
+        - id: user-service
+          uri: http://localhost:5001
+          predicates:
+            - Path=/auth/**, /user/**
+          filters:
+            - name: JwtAuthentication
+
+        - id: order-service
+          uri: http://localhost:6000
+          predicates:
+            - Path=/orders/**
+          filters:
+            - name: JwtAuthentication

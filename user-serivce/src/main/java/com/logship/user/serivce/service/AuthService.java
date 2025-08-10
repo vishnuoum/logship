@@ -16,6 +16,8 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
+
 @Service
 @RequiredArgsConstructor
 public class AuthService {
@@ -35,7 +37,9 @@ public class AuthService {
         }
     }
 
-    public LoginResponse validateUser(LoginRequest request, String ip, String userAgent) {
+    public LoginResponse validateUser(LoginRequest request, HttpServletRequest httpServletRequest) {
+        String userAgent = Optional.ofNullable(httpServletRequest.getHeader("X-User-Agent")).orElseThrow(() -> ExceptionManager.throwException(ExceptionManager.ERRORCODE.USER_AGENT_NOT_FOUNT_ERROR));
+        String ip = Optional.ofNullable(httpServletRequest.getHeader("X-Client-IP")).orElseThrow(() -> ExceptionManager.throwException(ExceptionManager.ERRORCODE.IP_NOT_FOUNT_ERROR));
         try {
             authenticationManager.authenticate(
                     new UsernamePasswordAuthenticationToken(request.getUsername(), request.getPassword()));

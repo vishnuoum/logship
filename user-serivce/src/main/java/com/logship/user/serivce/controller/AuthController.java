@@ -23,7 +23,7 @@ public class AuthController {
 
     @PostMapping("/login")
     public ResponseEntity<LoginResponse> login(@Valid @RequestBody LoginRequest request, HttpServletRequest servletRequest) {
-        return ResponseEntity.ok(authService.validateUser(request, servletRequest.getRemoteAddr(), servletRequest.getHeader("User-Agent")));
+        return ResponseEntity.ok(authService.validateUser(request, servletRequest));
     }
 
     @PostMapping("/signup")

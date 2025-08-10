@@ -18,6 +18,8 @@ public class ExceptionManager {
         public static final String USER_CREDENTIALS_ERROR = "E1003";
         public static final String USER_NOT_FOUND_ERROR = "E1004";
         public static final String ACCESS_DENIED_ERROR = "E1005";
+        public static final String USER_AGENT_NOT_FOUNT_ERROR = "E1006";
+        public static final String IP_NOT_FOUNT_ERROR = "E1007";
     }
 
     public static class ERRORMESSAGE {
@@ -28,6 +30,8 @@ public class ExceptionManager {
         public static final String USER_CREDENTIALS_ERROR = "Wrong User Credentials";
         public static final String USER_NOT_FOUND_ERROR = "User not found";
         public static final String ACCESS_DENIED_ERROR = "Access denied to resource";
+        public static final String USER_AGENT_NOT_FOUNT_ERROR = "User agent not found";
+        public static final String IP_NOT_FOUNT_ERROR = "IP Address not found";
     }
 
     static {
@@ -42,6 +46,10 @@ public class ExceptionManager {
                 ERRORMESSAGE.USER_NOT_FOUND_ERROR, HttpStatus.EXPECTATION_FAILED));
         exceptionMap.put(ERRORCODE.ACCESS_DENIED_ERROR, new UserServiceException(ERRORCODE.ACCESS_DENIED_ERROR,
                 ERRORMESSAGE.ACCESS_DENIED_ERROR, HttpStatus.UNAUTHORIZED));
+        exceptionMap.put(ERRORCODE.USER_AGENT_NOT_FOUNT_ERROR, new UserServiceException(ERRORCODE.USER_AGENT_NOT_FOUNT_ERROR,
+                ERRORMESSAGE.USER_AGENT_NOT_FOUNT_ERROR, HttpStatus.BAD_REQUEST));
+        exceptionMap.put(ERRORCODE.IP_NOT_FOUNT_ERROR, new UserServiceException(ERRORCODE.IP_NOT_FOUNT_ERROR,
+                ERRORMESSAGE.IP_NOT_FOUNT_ERROR, HttpStatus.BAD_REQUEST));
     }
 
     public static UserServiceException throwException(String errorCode) {
