@@ -6,8 +6,6 @@ import org.springframework.cloud.gateway.filter.factory.AbstractGatewayFilterFac
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.server.reactive.ServerHttpRequest;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Component;
 
 import java.net.InetAddress;
@@ -18,12 +16,10 @@ import java.util.Optional;
 public class JwtAuthenticationGatewayFilterFactory  extends AbstractGatewayFilterFactory<JwtAuthenticationGatewayFilterFactory.Config> {
 
     private final JwtService jwtService;
-    private final UserDetailsService userDetailsService;
 
-    public JwtAuthenticationGatewayFilterFactory(JwtService jwtService, UserDetailsService userDetailsService) {
+    public JwtAuthenticationGatewayFilterFactory(JwtService jwtService) {
         super(Config.class);
         this.jwtService = jwtService;
-        this.userDetailsService = userDetailsService;
     }
 
     @Override
@@ -45,12 +41,14 @@ public class JwtAuthenticationGatewayFilterFactory  extends AbstractGatewayFilte
             }
 
             String jwt = authHeader.substring(7).strip();
-            String username = jwtService.extractUsername(jwt);
+            modifiedRequest = modifiedRequest.mutate()
+                    .header("X-UUID", jwtService.extractUUID(jwt))
+                    .header("X-ROLE", jwtService.extractRole(jwt))
+                    .build();
             try {
-                UserDetails userDetails = userDetailsService.loadUserByUsername(username);
                 String ip = Optional.ofNullable(exchange.getRequest().getRemoteAddress()).map(InetSocketAddress::getAddress).map(InetAddress::getHostAddress).orElse("");
                 String userAgent = Optional.ofNullable(exchange.getRequest().getHeaders().getFirst("User-Agent")).orElse("");
-                if (!jwtService.isTokenValid(jwt, userDetails, ip, userAgent)) {
+                if (!jwtService.isTokenValid(jwt, ip, userAgent)) {
                     exchange.getResponse().setStatusCode(HttpStatus.UNAUTHORIZED);
                     return exchange.getResponse().setComplete();
                 }

@@ -23,15 +23,15 @@ public class OrderController {
 
     @PreAuthorize("hasAuthority('CUSTOMER')")
     @PostMapping("/create")
-    public ResponseEntity<Void> createOrder(@Valid @RequestBody CreateOrderRequest request) {
-        orderService.createOrder(request);
+    public ResponseEntity<Void> createOrder(@Valid @RequestBody CreateOrderRequest request, @RequestHeader("X-UUID") String userId) {
+        orderService.createOrder(request, userId);
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
     @PreAuthorize("hasAuthority('CUSTOMER')")
     @GetMapping("/fetchAllOrders")
-    public ResponseEntity<List<OrderDTO>> fetchAllOrders(Authentication authentication) {
-        return ResponseEntity.ok(orderService.fetchAllOrders(authentication.getName()));
+    public ResponseEntity<List<OrderDTO>> fetchAllOrders(@RequestHeader("X-UUID") String userId) {
+        return ResponseEntity.ok(orderService.fetchAllOrders(userId));
     }
 
     @PreAuthorize("hasAuthority('CUSTOMER')")

@@ -3,7 +3,9 @@ package com.logship.order.service.entity;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.annotations.JdbcTypeCode;
 
+import java.sql.Types;
 import java.util.UUID;
 
 @Entity
@@ -14,7 +16,9 @@ public class Order {
 
     @Id
     @GeneratedValue
+    @JdbcTypeCode(Types.VARCHAR)
     private UUID id;
+    @JdbcTypeCode(Types.VARCHAR)
     private UUID customerId;
     private String pickupAddress;
     private String dropAddress;

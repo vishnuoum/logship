@@ -3,6 +3,7 @@ package com.logship.user.serivce.service;
 import com.logship.user.serivce.controller.request.LoginRequest;
 import com.logship.user.serivce.controller.request.SignupRequest;
 import com.logship.user.serivce.controller.response.LoginResponse;
+import com.logship.user.serivce.entity.User;
 import com.logship.user.serivce.exception.ExceptionManager;
 import com.logship.user.serivce.logging.LogUtil;
 import com.logship.user.serivce.mapper.UserMapper;
@@ -43,7 +44,8 @@ public class AuthService {
         try {
             authenticationManager.authenticate(
                     new UsernamePasswordAuthenticationToken(request.getUsername(), request.getPassword()));
-            String token = jwtService.generateToken(userDetailsService.loadUserByUsername(request.getUsername()), ip, userAgent);
+            User user = userRepository.findByUsername(request.getUsername()).orElseThrow(() -> ExceptionManager.throwException(ExceptionManager.ERRORCODE.USER_NOT_FOUND_ERROR));
+            String token = jwtService.generateToken(userDetailsService.loadUserByUsername(request.getUsername()), ip, userAgent, user.getId().toString());
             LoginResponse response = new LoginResponse();
             response.setToken(token);
             return response;

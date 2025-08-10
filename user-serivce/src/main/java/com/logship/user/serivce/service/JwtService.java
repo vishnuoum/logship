@@ -23,12 +23,13 @@ public class JwtService {
         return Keys.hmacShaKeyFor(secretKey.getBytes(StandardCharsets.UTF_8));
     }
 
-    public String generateToken(UserDetails userDetails, String ip, String userAgent) {
+    public String generateToken(UserDetails userDetails, String ip, String userAgent, String uuid) {
         return Jwts.builder()
                 .setSubject(userDetails.getUsername())
                 .claim("role", userDetails.getAuthorities().iterator().next().getAuthority())
                 .claim("ip", ip)
                 .claim("ua", userAgent)
+                .claim("uuid", uuid)
                 .setIssuedAt(new Date())
                 .setExpiration(new Date(System.currentTimeMillis() + 60000 * 60 * 12))
                 .signWith(Keys.hmacShaKeyFor(secretKey.getBytes()), SignatureAlgorithm.HS256)

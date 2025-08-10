@@ -36,4 +36,9 @@ public class JwtService {
                 .parseClaimsJws(token)
                 .getBody();
     }
+
+    public String extractUUID(String token) {
+        Claims claims = extractAllClaims(token);
+        return claims.get("uuid", String.class);
+    }
 }
