@@ -1,12 +1,14 @@
 package com.logship.order.service.service;
 
 import com.logship.order.service.controller.request.CreateOrderRequest;
+import com.logship.order.service.dto.OrderCreatedEventDTO;
 import com.logship.order.service.dto.OrderDTO;
 import com.logship.order.service.entity.Order;
 import com.logship.order.service.exception.ExceptionManager;
 import com.logship.order.service.exception.OrderServiceException;
 import com.logship.order.service.logging.LogUtil;
 import com.logship.order.service.mapper.OrderMapper;
+import com.logship.order.service.producers.OrderCreatedEventProducer;
 import com.logship.order.service.repository.OrderRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -20,12 +22,15 @@ public class OrderService {
 
     private final OrderMapper orderMapper;
     private final OrderRepository orderRepository;
+    private final OrderCreatedEventProducer orderCreatedEventProducer;
 
     public void createOrder(CreateOrderRequest request, String userId) {
         try {
             Order order = orderMapper.mapOrderFromRequest(request);
             order.setCustomerId(UUID.fromString(userId));
             orderRepository.save(order);
+            OrderCreatedEventDTO eventDTO = orderMapper.mapToEventDTO(order);
+            orderCreatedEventProducer.sendOrderCreatedEvent(eventDTO);
         } catch (Exception e) {
             LogUtil.printInfo(getClass(), "Error while saving the order");
             LogUtil.printError(e);
