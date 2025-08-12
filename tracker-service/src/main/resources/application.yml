@@ -1,0 +1,5 @@
+spring:
+  application:
+    name: tracker-service
+  config:
+    import: classpath:/properties/app.properties, optional:classpath:/properties/secret.properties

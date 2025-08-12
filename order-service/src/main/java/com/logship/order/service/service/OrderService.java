@@ -8,7 +8,7 @@ import com.logship.order.service.exception.ExceptionManager;
 import com.logship.order.service.exception.OrderServiceException;
 import com.logship.order.service.logging.LogUtil;
 import com.logship.order.service.mapper.OrderMapper;
-import com.logship.order.service.producers.OrderCreatedEventProducer;
+import com.logship.order.service.producer.OrderCreatedEventProducer;
 import com.logship.order.service.repository.OrderRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;

@@ -1,4 +1,4 @@
-package com.logship.order.service.dto;
+package com.logship.tracker.service.dto;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -11,8 +11,4 @@ import java.util.UUID;
 public class OrderCreatedEventDTO {
     private UUID orderId;
     private Date timestamp;
-
-    public OrderCreatedEventDTO() {
-        timestamp = new Date();
-    }
 }

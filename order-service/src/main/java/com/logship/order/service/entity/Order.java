@@ -6,6 +6,7 @@ import lombok.Setter;
 import org.hibernate.annotations.JdbcTypeCode;
 
 import java.sql.Types;
+import java.util.Date;
 import java.util.UUID;
 
 @Entity
@@ -24,4 +25,5 @@ public class Order {
     private String dropAddress;
     private boolean isFragile;
     private String remarks;
+    private Date createdDate = new Date();
 }
