@@ -36,7 +36,7 @@ public class WarehouseService {
         }
     }
 
-    public Boolean isWarehouseAvailable(Integer pinCode) {
+    public Boolean isWarehouseAvailable(String pinCode) {
         try {
             return servingCodeRepository.existsByPinCode(pinCode);
         } catch (Exception e) {
@@ -59,7 +59,7 @@ public class WarehouseService {
 
     public void checkoutInventory(CheckoutInventoryRequest checkoutInventoryRequest) {
         try {
-            inventoryRepository.checkoutInventory(checkoutInventoryRequest.getOrderId(), checkoutInventoryRequest.getWarehouseId());
+            inventoryRepository.checkoutInventory(checkoutInventoryRequest.getOrderId(), Warehouse.builder().id(checkoutInventoryRequest.getWarehouseId()).build());
         } catch (Exception e) {
             LogUtil.printInfo(getClass(), "Error while checking out inventory from warehouse");
             LogUtil.printError(e);

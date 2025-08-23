@@ -19,6 +19,8 @@ public class ExceptionManager {
         public static final String WAREHOUSE_FETCH_ERROR = "E1005";
         public static final String INVENTORY_CREATION_ERROR = "E1006";
         public static final String INVENTORY_CHECKOUT_ERROR = "E1007";
+        public static final String EMPLOYEE_ADD_ERROR = "E1008";
+        public static final String EMPLOYEE_FETCH_ERROR = "E1009";
     }
 
     public static class ERRORMESSAGE {
@@ -30,6 +32,8 @@ public class ExceptionManager {
         public static final String WAREHOUSE_FETCH_ERROR = "Error while fetching details of warehouse";
         public static final String INVENTORY_CREATION_ERROR = "Error while creating the inventory";
         public static final String INVENTORY_CHECKOUT_ERROR = "Error while checking out inventory from warehouse";
+        public static final String EMPLOYEE_ADD_ERROR = "Error while adding employee";
+        public static final String EMPLOYEE_FETCH_ERROR = "Error while fetching employee details";
     }
 
     static {
@@ -46,6 +50,10 @@ public class ExceptionManager {
                 ERRORMESSAGE.INVENTORY_CREATION_ERROR, HttpStatus.INTERNAL_SERVER_ERROR));
         exceptionMap.put(ERRORCODE.INVENTORY_CHECKOUT_ERROR, new WarehouseServiceException(ERRORCODE.INVENTORY_CHECKOUT_ERROR,
                 ERRORMESSAGE.INVENTORY_CHECKOUT_ERROR, HttpStatus.INTERNAL_SERVER_ERROR));
+        exceptionMap.put(ERRORCODE.EMPLOYEE_ADD_ERROR, new WarehouseServiceException(ERRORCODE.EMPLOYEE_ADD_ERROR,
+                ERRORMESSAGE.EMPLOYEE_ADD_ERROR, HttpStatus.INTERNAL_SERVER_ERROR));
+        exceptionMap.put(ERRORCODE.EMPLOYEE_FETCH_ERROR, new WarehouseServiceException(ERRORCODE.EMPLOYEE_FETCH_ERROR,
+                ERRORMESSAGE.EMPLOYEE_FETCH_ERROR, HttpStatus.INTERNAL_SERVER_ERROR));
     }
 
     public static WarehouseServiceException throwException(String errorCode) {

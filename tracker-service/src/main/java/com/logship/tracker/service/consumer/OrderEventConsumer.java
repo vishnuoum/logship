@@ -3,6 +3,7 @@ package com.logship.tracker.service.consumer;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.logship.tracker.service.dto.OrderCreatedEventDTO;
+import com.logship.tracker.service.dto.OrderUpdateEventDTO;
 import com.logship.tracker.service.entity.OrderStatus;
 import com.logship.tracker.service.logging.LogUtil;
 import com.logship.tracker.service.mapper.OrderStatusMapper;
@@ -13,7 +14,7 @@ import org.springframework.stereotype.Component;
 
 @Component
 @RequiredArgsConstructor
-public class OrderCreatedEventConsumer {
+public class OrderEventConsumer {
 
     private final ObjectMapper objectMapper;
     private final OrderStatusMapper orderStatusMapper;
@@ -27,6 +28,21 @@ public class OrderCreatedEventConsumer {
             orderStatusRepository.save(orderStatus);
         } catch (JsonProcessingException e) {
             LogUtil.printInfo(getClass(), "Error while converting json data to Order Created Event");
+        } catch (Exception e) {
+            LogUtil.printInfo(getClass(), "Error while saving order created event");
+        }
+    }
+
+    @KafkaListener(topics = "order-status", groupId = "tracker-service-group")
+    public void orderUpdateEvent(String data) {
+        try {
+            OrderUpdateEventDTO orderUpdateEventDTO = objectMapper.readValue(data, OrderUpdateEventDTO.class);
+            OrderStatus orderStatus = orderStatusMapper.mapToEntityFromDTO(orderUpdateEventDTO);
+            orderStatusRepository.save(orderStatus);
+        } catch (JsonProcessingException e) {
+            LogUtil.printInfo(getClass(), "Error while converting json data to Order Updated Event");
+        } catch (Exception e) {
+            LogUtil.printInfo(getClass(), "Error while saving order update event");
         }
     }
 }
