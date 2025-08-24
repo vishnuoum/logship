@@ -19,6 +19,7 @@ public class ExceptionManager {
         public static final String ORDER_FETCH_ERROR = "E1005";
         public static final String USER_NOT_FOUND_ERROR = "E1006";
         public static final String ORDER_NOT_EXISTS_ERROR = "E1007";
+        public static final String ORDER_WEIGHT_UPDATE_ERROR = "E1008";
     }
 
     public static class ERRORMESSAGE {
@@ -30,6 +31,7 @@ public class ExceptionManager {
         public static final String ORDER_FETCH_ERROR = "Error while fetching order";
         public static final String USER_NOT_FOUND_ERROR = "User not found";
         public static final String ORDER_NOT_EXISTS_ERROR = "Order does not exists";
+        public static final String ORDER_WEIGHT_UPDATE_ERROR = "Error while updating the order weight";
     }
 
     static {
@@ -45,7 +47,9 @@ public class ExceptionManager {
         exceptionMap.put(ERRORCODE.USER_NOT_FOUND_ERROR, new OrderServiceException(ERRORCODE.USER_NOT_FOUND_ERROR,
                 ERRORMESSAGE.USER_NOT_FOUND_ERROR, HttpStatus.UNAUTHORIZED));
         exceptionMap.put(ERRORCODE.ORDER_NOT_EXISTS_ERROR, new OrderServiceException(ERRORCODE.ORDER_NOT_EXISTS_ERROR,
-                ERRORMESSAGE.ORDER_NOT_EXISTS_ERROR, HttpStatus.UNAUTHORIZED));
+                ERRORMESSAGE.ORDER_NOT_EXISTS_ERROR, HttpStatus.BAD_REQUEST));
+        exceptionMap.put(ERRORCODE.ORDER_WEIGHT_UPDATE_ERROR, new OrderServiceException(ERRORCODE.ORDER_WEIGHT_UPDATE_ERROR,
+                ERRORMESSAGE.ORDER_WEIGHT_UPDATE_ERROR, HttpStatus.INTERNAL_SERVER_ERROR));
     }
 
     public static OrderServiceException throwException(String errorCode) {

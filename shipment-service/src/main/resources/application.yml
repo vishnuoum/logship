@@ -1,0 +1,5 @@
+spring:
+  application:
+    name: shipment-service
+  config:
+    import: classpath:/properties/app.properties, optional:classpath:/properties/secret.properties

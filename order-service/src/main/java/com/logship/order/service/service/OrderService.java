@@ -1,5 +1,6 @@
 package com.logship.order.service.service;
 
+import com.logship.order.service.controller.request.AddWeightRequest;
 import com.logship.order.service.controller.request.CreateOrderRequest;
 import com.logship.order.service.dto.OrderCreatedEventDTO;
 import com.logship.order.service.dto.OrderDTO;
@@ -60,6 +61,16 @@ public class OrderService {
             LogUtil.printInfo(getClass(), "Error while fetching the order");
             LogUtil.printError(e);
             throw ExceptionManager.throwException(ExceptionManager.ERRORCODE.ORDER_FETCH_ERROR);
+        }
+    }
+
+    public void updateOrderWeight(AddWeightRequest addWeightRequest) {
+        try {
+            orderRepository.updateOrderWeight(addWeightRequest.getOrderId(), addWeightRequest.getWeight());
+        } catch (Exception e) {
+            LogUtil.printInfo(getClass(), "Error while updating the weight of order");
+            LogUtil.printError(e);
+            throw ExceptionManager.throwException(ExceptionManager.ERRORCODE.ORDER_WEIGHT_UPDATE_ERROR);
         }
     }
 }

@@ -1,4 +1,4 @@
-package com.logship.order.service.entity;
+package com.logship.shipment.service.entity;
 
 import jakarta.persistence.*;
 import lombok.Getter;
@@ -9,22 +9,21 @@ import java.sql.Types;
 import java.util.Date;
 import java.util.UUID;
 
+@Table
 @Entity
-@Table(name = "orders")
 @Getter
 @Setter
-public class Order {
+public class PickupSchedule {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
     @JdbcTypeCode(Types.VARCHAR)
-    private UUID id;
+    private UUID driverId;
     @JdbcTypeCode(Types.VARCHAR)
-    private UUID customerId;
-    private String pickupAddress;
-    private String dropAddress;
-    private boolean isFragile;
-    private String remarks;
+    private UUID orderId;
+    private String address;
+    private String pinCode;
     private Date createdDate = new Date();
-    private Double weight;
+    private Date endDate;
 }

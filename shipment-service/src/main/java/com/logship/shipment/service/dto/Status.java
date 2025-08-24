@@ -1,4 +1,4 @@
-package com.logship.tracker.service.entity;
+package com.logship.shipment.service.dto;
 
 public enum Status {
     ORDER_PLACED,PICKUP_SCHEDULED,ORDER_PICKED_UP,IN_TRANSIT,REACHED_WAREHOUSE,DELIVERY_SCHEDULED,DELIVERED;

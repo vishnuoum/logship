@@ -1,5 +1,6 @@
 package com.logship.order.service.controller;
 
+import com.logship.order.service.controller.request.AddWeightRequest;
 import com.logship.order.service.controller.request.CreateOrderRequest;
 import com.logship.order.service.dto.OrderDTO;
 import com.logship.order.service.service.OrderService;
@@ -26,6 +27,12 @@ public class OrderController {
     public ResponseEntity<Void> createOrder(@Valid @RequestBody CreateOrderRequest request, @RequestHeader("X-UUID") String userId) {
         orderService.createOrder(request, userId);
         return ResponseEntity.status(HttpStatus.CREATED).build();
+    }
+
+    @PostMapping("/addWeight")
+    public ResponseEntity<Void> addWeight(@Valid @RequestBody AddWeightRequest addWeightRequest) {
+        orderService.updateOrderWeight(addWeightRequest);
+        return ResponseEntity.ok().build();
     }
 
     @PreAuthorize("hasAuthority('CUSTOMER')")
