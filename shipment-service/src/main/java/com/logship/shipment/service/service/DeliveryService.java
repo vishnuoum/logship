@@ -21,12 +21,14 @@ public class DeliveryService {
 
     public void scheduleDelivery(ScheduleDeliveryRequest scheduleDeliveryRequest) {
         try {
-            List<DeliverySchedule> deliverySchedules = deliveryScheduleMapper.orderDetailsToDeliverySchedule(scheduleDeliveryRequest.getOrderDetails());
-            deliverySchedules.forEach(deliverySchedule -> deliverySchedule.setOrderId(scheduleDeliveryRequest.getDriverId()));
+            List<DeliverySchedule> deliverySchedules = deliveryScheduleMapper
+                    .orderDetailsToDeliverySchedule(scheduleDeliveryRequest.getOrderDetails());
+            deliverySchedules
+                    .forEach(deliverySchedule -> deliverySchedule.setOrderId(scheduleDeliveryRequest.getDriverId()));
             deliveryScheduleRepository.saveAll(deliverySchedules);
         } catch (Exception e) {
             LogUtil.printInfo(getClass(), "Error while saving the delivery schedule");
-            LogUtil.printError(e);
+            LogUtil.printError(e.getMessage());
             throw ExceptionManager.throwException(ExceptionManager.ERRORCODE.DELIVERY_SCHEDULE_ERROR);
         }
     }
@@ -36,7 +38,7 @@ public class DeliveryService {
             deliveryScheduleRepository.endDeliverySchedule(deliveryRequest.getOrderId());
         } catch (Exception e) {
             LogUtil.printInfo(getClass(), "Error while ending the delivery schedule");
-            LogUtil.printError(e);
+            LogUtil.printError(e.getMessage());
             throw ExceptionManager.throwException(ExceptionManager.ERRORCODE.DELIVERY_END_ERROR);
         }
     }

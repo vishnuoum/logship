@@ -22,7 +22,7 @@ public class ShipmentService {
             shipmentRepository.save(shipmentMapper.createRequestToEntity(createShipmentRequest));
         } catch (Exception e) {
             LogUtil.printInfo(getClass(), "Error while creating shipment");
-            LogUtil.printError(e);
+            LogUtil.printError(e.getMessage());
             throw ExceptionManager.throwException(ExceptionManager.ERRORCODE.SHIPMENT_CREATE_ERROR);
         }
     }
@@ -32,7 +32,7 @@ public class ShipmentService {
             shipmentRepository.startShipment(startShipmentRequest.getShipmentId());
         } catch (Exception e) {
             LogUtil.printInfo(getClass(), "Error while starting shipment");
-            LogUtil.printError(e);
+            LogUtil.printError(e.getMessage());
             throw ExceptionManager.throwException(ExceptionManager.ERRORCODE.SHIPMENT_START_ERROR);
         }
     }
@@ -42,7 +42,7 @@ public class ShipmentService {
             shipmentRepository.endShipment(endShipmentRequest.getShipmentId());
         } catch (Exception e) {
             LogUtil.printInfo(getClass(), "Error while ending shipment");
-            LogUtil.printError(e);
+            LogUtil.printError(e.getMessage());
             throw ExceptionManager.throwException(ExceptionManager.ERRORCODE.SHIPMENT_END_ERROR);
         }
     }

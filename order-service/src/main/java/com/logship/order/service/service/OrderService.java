@@ -34,21 +34,21 @@ public class OrderService {
             orderCreatedEventProducer.sendOrderCreatedEvent(eventDTO);
         } catch (Exception e) {
             LogUtil.printInfo(getClass(), "Error while saving the order");
-            LogUtil.printError(e);
+            LogUtil.printError(e.getMessage());
             throw ExceptionManager.throwException(ExceptionManager.ERRORCODE.ORDER_SAVE_ERROR);
         }
     }
 
     public OrderDTO getOrderDetails(UUID orderId) {
         try {
-            Order order = orderRepository.findById(orderId).orElseThrow(() ->
-                    ExceptionManager.throwException(ExceptionManager.ERRORCODE.ORDER_NOT_EXISTS_ERROR));
+            Order order = orderRepository.findById(orderId).orElseThrow(
+                    () -> ExceptionManager.throwException(ExceptionManager.ERRORCODE.ORDER_NOT_EXISTS_ERROR));
             return orderMapper.mapToDTO(order);
         } catch (OrderServiceException e) {
             throw e;
         } catch (Exception e) {
             LogUtil.printInfo(getClass(), "Error while fetching the order");
-            LogUtil.printError(e);
+            LogUtil.printError(e.getMessage());
             throw ExceptionManager.throwException(ExceptionManager.ERRORCODE.ORDER_NOT_EXISTS_ERROR);
         }
     }
@@ -59,7 +59,7 @@ public class OrderService {
             return orderMapper.mapToDTO(orders);
         } catch (Exception e) {
             LogUtil.printInfo(getClass(), "Error while fetching the order");
-            LogUtil.printError(e);
+            LogUtil.printError(e.getMessage());
             throw ExceptionManager.throwException(ExceptionManager.ERRORCODE.ORDER_FETCH_ERROR);
         }
     }
@@ -69,7 +69,7 @@ public class OrderService {
             orderRepository.updateOrderWeight(addWeightRequest.getOrderId(), addWeightRequest.getWeight());
         } catch (Exception e) {
             LogUtil.printInfo(getClass(), "Error while updating the weight of order");
-            LogUtil.printError(e);
+            LogUtil.printError(e.getMessage());
             throw ExceptionManager.throwException(ExceptionManager.ERRORCODE.ORDER_WEIGHT_UPDATE_ERROR);
         }
     }

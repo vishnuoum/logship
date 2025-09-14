@@ -31,7 +31,7 @@ public class WarehouseService {
             warehouseRepository.save(warehouse);
         } catch (Exception e) {
             LogUtil.printInfo(getClass(), "Error while creating warehouse");
-            LogUtil.printError(e);
+            LogUtil.printError(e.getMessage());
             throw ExceptionManager.throwException(ExceptionManager.ERRORCODE.WAREHOUSE_CREATION_ERROR);
         }
     }
@@ -41,7 +41,7 @@ public class WarehouseService {
             return servingCodeRepository.existsByPinCode(pinCode);
         } catch (Exception e) {
             LogUtil.printInfo(getClass(), "Error while fetching warehouse details");
-            LogUtil.printError(e);
+            LogUtil.printError(e.getMessage());
             throw ExceptionManager.throwException(ExceptionManager.ERRORCODE.WAREHOUSE_FETCH_ERROR);
         }
     }
@@ -52,17 +52,18 @@ public class WarehouseService {
             inventoryRepository.save(inventory);
         } catch (Exception e) {
             LogUtil.printInfo(getClass(), "Error while adding inventory to warehouse");
-            LogUtil.printError(e);
+            LogUtil.printError(e.getMessage());
             throw ExceptionManager.throwException(ExceptionManager.ERRORCODE.INVENTORY_CREATION_ERROR);
         }
     }
 
     public void checkoutInventory(CheckoutInventoryRequest checkoutInventoryRequest) {
         try {
-            inventoryRepository.checkoutInventory(checkoutInventoryRequest.getOrderId(), Warehouse.builder().id(checkoutInventoryRequest.getWarehouseId()).build());
+            inventoryRepository.checkoutInventory(checkoutInventoryRequest.getOrderId(),
+                    Warehouse.builder().id(checkoutInventoryRequest.getWarehouseId()).build());
         } catch (Exception e) {
             LogUtil.printInfo(getClass(), "Error while checking out inventory from warehouse");
-            LogUtil.printError(e);
+            LogUtil.printError(e.getMessage());
             throw ExceptionManager.throwException(ExceptionManager.ERRORCODE.INVENTORY_CREATION_ERROR);
         }
     }

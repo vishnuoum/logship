@@ -22,6 +22,7 @@ public class ExceptionManager {
         public static final String SHIPMENT_END_ERROR = "E1008";
         public static final String DELIVERY_SCHEDULE_ERROR = "E1009";
         public static final String DELIVERY_END_ERROR = "E1010";
+        public static final String PENDING_PICKUP_FETCH_ERROR = "E1011";
     }
 
     public static class ERRORMESSAGE {
@@ -36,6 +37,7 @@ public class ExceptionManager {
         public static final String SHIPMENT_END_ERROR = "Error while ending shipment";
         public static final String DELIVERY_SCHEDULE_ERROR = "Error while saving the delivery schedule";
         public static final String DELIVERY_END_ERROR = "Error while ending the delivery schedule";
+        public static final String PENDING_PICKUP_FETCH_ERROR = "Error while fetching pending pickup orders";
     }
 
     static {
@@ -58,6 +60,8 @@ public class ExceptionManager {
                 ERRORMESSAGE.DELIVERY_SCHEDULE_ERROR, HttpStatus.INTERNAL_SERVER_ERROR));
         exceptionMap.put(ERRORCODE.DELIVERY_END_ERROR, new ShipmentServiceException(ERRORCODE.DELIVERY_END_ERROR,
                 ERRORMESSAGE.DELIVERY_END_ERROR, HttpStatus.INTERNAL_SERVER_ERROR));
+        exceptionMap.put(ERRORCODE.PENDING_PICKUP_FETCH_ERROR, new ShipmentServiceException(ERRORCODE.PENDING_PICKUP_FETCH_ERROR,
+                ERRORMESSAGE.PENDING_PICKUP_FETCH_ERROR, HttpStatus.INTERNAL_SERVER_ERROR));
     }
 
     public static ShipmentServiceException throwException(String errorCode) {

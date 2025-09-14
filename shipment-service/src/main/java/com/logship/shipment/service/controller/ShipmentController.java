@@ -14,6 +14,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.List;
+import java.util.UUID;
+
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/shipment")
@@ -72,4 +75,11 @@ public class ShipmentController {
         deliveryService.updateDelivery(deliveryRequest);
         return ResponseEntity.ok().build();
     }
+
+    @PreAuthorize("hasAuthority('MANAGER')")
+    @PostMapping("/listPending")
+    public ResponseEntity<List<UUID>> listPending(@Valid @RequestBody ListPendingRequest listPendingRequest) {
+        return ResponseEntity.ok(pickupScheduleService.getPendingPickupOrders(listPendingRequest));
+    }
+
 }

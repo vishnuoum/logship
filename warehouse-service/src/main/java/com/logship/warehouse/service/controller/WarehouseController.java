@@ -46,7 +46,7 @@ public class WarehouseController {
 
     @PreAuthorize("hasAuthority('MANAGER')")
     @PutMapping("/checkoutInventory")
-    public ResponseEntity<Void> addToInventory(@Valid @RequestBody CheckoutInventoryRequest checkoutInventoryRequest) {
+    public ResponseEntity<Void> checkoutInventory(@Valid @RequestBody CheckoutInventoryRequest checkoutInventoryRequest) {
         warehouseService.checkoutInventory(checkoutInventoryRequest);
         return ResponseEntity.ok().build();
     }

@@ -26,18 +26,19 @@ public class WarehouseEmployeeService {
             warehouseEmployeeRepository.save(employee);
         } catch (Exception e) {
             LogUtil.printInfo(getClass(), "Error while adding employee to warehouse");
-            LogUtil.printError(e);
+            LogUtil.printError(e.getMessage());
             throw ExceptionManager.throwException(ExceptionManager.ERRORCODE.EMPLOYEE_ADD_ERROR);
         }
     }
 
     public List<WarehouseEmployeeDTO> getEmployees(Long warehouseId) {
         try {
-            List<WarehouseEmployee> employees = warehouseEmployeeRepository.getWarehouseEmployeesByWarehouse(Warehouse.builder().id(warehouseId).build());
+            List<WarehouseEmployee> employees = warehouseEmployeeRepository
+                    .getWarehouseEmployeesByWarehouse(Warehouse.builder().id(warehouseId).build());
             return warehouseEmployeeMapper.entityToDTOMapper(employees);
         } catch (Exception e) {
             LogUtil.printInfo(getClass(), "Error while fetching warehouse employees");
-            LogUtil.printError(e);
+            LogUtil.printError(e.getMessage());
             throw ExceptionManager.throwException(ExceptionManager.ERRORCODE.EMPLOYEE_FETCH_ERROR);
         }
     }

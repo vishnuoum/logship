@@ -22,7 +22,9 @@ public class Order {
     @JdbcTypeCode(Types.VARCHAR)
     private UUID customerId;
     private String pickupAddress;
+    private String pickupPinCode;
     private String dropAddress;
+    private String dropPinCode;
     private boolean isFragile;
     private String remarks;
     private Date createdDate = new Date();

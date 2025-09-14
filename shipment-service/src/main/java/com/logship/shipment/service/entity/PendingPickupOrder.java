@@ -14,11 +14,12 @@ import java.util.UUID;
 @Getter
 @Setter
 @Builder
-public class PendingPickup {
+public class PendingPickupOrder {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @JdbcTypeCode(Types.VARCHAR)
     private UUID orderId;
+    private String pickupPinCode;
 }

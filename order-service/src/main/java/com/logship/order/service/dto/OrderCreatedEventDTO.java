@@ -11,6 +11,7 @@ import java.util.UUID;
 public class OrderCreatedEventDTO {
     private UUID orderId;
     private Date timestamp;
+    private String pickupPinCode;
 
     public OrderCreatedEventDTO() {
         timestamp = new Date();
