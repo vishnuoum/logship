@@ -21,8 +21,9 @@ public class OrderCreatedEventConsumer {
     public void orderCreatedEvent(String data) {
         try {
             OrderCreatedEventDTO orderCreatedEventDTO = objectMapper.readValue(data, OrderCreatedEventDTO.class);
-            PendingPickupOrder pendingPickupOrder = PendingPickupOrder.builder().orderId(orderCreatedEventDTO.getOrderId()).build();
+            PendingPickupOrder pendingPickupOrder = PendingPickupOrder.builder().orderId(orderCreatedEventDTO.getOrderId()).pickupPinCode(orderCreatedEventDTO.getPickupPinCode()).build();
             pendingPickupOrderRepository.save(pendingPickupOrder);
+            LogUtil.printInfo(getClass(), "Saved Pending Order");
         } catch (JsonProcessingException e) {
             LogUtil.printInfo(getClass(), "Error while converting json data to Order Created Event");
         } catch (Exception e) {

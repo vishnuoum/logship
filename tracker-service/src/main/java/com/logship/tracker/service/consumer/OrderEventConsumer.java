@@ -26,6 +26,7 @@ public class OrderEventConsumer {
             OrderCreatedEventDTO orderCreatedEventDTO = objectMapper.readValue(data, OrderCreatedEventDTO.class);
             OrderStatus orderStatus = orderStatusMapper.mapToEntityFromDTO(orderCreatedEventDTO);
             orderStatusRepository.save(orderStatus);
+            LogUtil.printInfo(getClass(), "Saved order status");
         } catch (JsonProcessingException e) {
             LogUtil.printInfo(getClass(), "Error while converting json data to Order Created Event");
         } catch (Exception e) {
